@@ -4,21 +4,67 @@
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
 <html>
-  <head>
+
+<head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title></title>
+    <title>ESPWebsite</title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="" />
-  </head>
-  <body>
-    <h1>Hello World!</h1>
+    <link rel="stylesheet" href="../static/style.css" type="text/css" />
+    <script type="text/javascript">
+        let menuToggler = document.getElementById('menuToggler')
+        let menuTogglerLabel = document.getElementById('menuTogglerLabel');
+        let sidebar = document.getElementById('sidebar');
+        let menuItems = document.getElementsByClassName('menu__link');
+
+        menuToggler.addEventListener('change', function() {
+            if (menuToggler.checked) {
+                menuTogglerLabel.setAttribute('aria-pressed', 'true');
+                sidebar.setAttribute('aria-hidden', 'false');
+            } else {
+                menuTogglerLabel.setAttribute('aria-pressed', 'false');
+                sidebar.setAttribute('aria-hidden', 'true');
+            }
+
+            for (let menuItem of menuItems) {
+                if (menuToggler.checked) {
+                    menuItem.setAttribute('tabindex', '0');
+                } else {
+                    menuItem.setAttribute('tabindex', '-1');
+                }
+            }
+        });
+    </script>
+</head>
+
+<body>
     <!--[if lt IE 7]>
       <p class="browsehappy">
         You are using an <strong>outdated</strong> browser. Please
         <a href="#">upgrade your browser</a> to improve your experience.
       </p>
     <![endif]-->
-  </body>
+    <div id="main">
+        <!-- <div id="topNav"></div> -->
+    </div>
+    <div class="wrapper">
+        <input type="checkbox" id="menuToggler" class="input-toggler" value="1" autofocus="true" />
+        <label for="menuToggler" id="menuTogglerLabel" class="menu-toggler" role="button" aria-pressed="false" aria-expanded="false" aria-label="Navigation button">
+        <span class="menu-toggler__line"></span>
+        <span class="menu-toggler__line"></span>
+        <span class="menu-toggler__line"></span>
+      </label>
+        <nav id="sidebar" class="sidebar" role="navigation" aria-labelledby="menuTogglerLabel" aria-hidden="true">
+            <ul id="menubar" class="menu" role="menubar" aria-orientation="vertical">
+                <li class="menu__item" role "none"><a class="menu__link" href="#" role="menuitem" tabindex="-1">Controls</a></li>
+                <li class="menu__item" role "none"><a class="menu__link" href="#" role="menuitem" tabindex="-1">Setup</a></li>
+                <li class="menu__item" role "none"><a class="menu__link" href="#" role="menuitem" tabindex="-1">Network</a></li>
+            </ul>
+        </nav>
+        <main class="content">
+        </main>
+    </div>
+</body>
+
 </html>

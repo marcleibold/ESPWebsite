@@ -1,0 +1,165 @@
+    @charset "UTF-8";
+    body {
+        background-color: rgb(48, 57, 184);
+        margin: 0;
+    }
+    /* #main {
+    margin: 0;
+    border: 0;
+    padding: 0;
+} */
+    
+     :root {
+        --sidebar-width: 300px;
+        --toggler-size: 30px;
+        --toggler-line-number: 3;
+        --toggler-line-size: calc(var(--toggler-size) / (var(--toggler-line-number) + var(--toggler-line-number) - 1));
+        --toggler-offset-left: 10px;
+        --toggler-offset-top: 10px;
+        --toggler-color: rgb(48, 57, 184);
+        --toggler-color-hover: rgb(247, 240, 228);
+    }
+    
+    * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+    }
+    
+    html {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+        font-size: 0.8rem;
+    }
+    
+    .wrapper {
+        min-width: 100vw;
+        background: AliceBlue;
+        display: flex;
+    }
+    
+    .sidebar,
+    .content {
+        transition: all 0.25s ease-out;
+    }
+    
+    .sidebar {
+        width: var(--sidebar-width);
+        transform: translateX(calc(var(--sidebar-width) * -1));
+        background: rgb(48, 57, 184);
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        position: absolute;
+        top: 0;
+        height: 100vh;
+        opacity: 0.5;
+        padding-top: var(--toggler-size)
+    }
+    
+    .content {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+    
+    .menu {
+        list-style-type: none;
+        width: inherit;
+    }
+    
+    .menu__link {
+        color: lightgray;
+        font-weight: 100;
+        text-decoration: none;
+        font-size: 4vmin;
+        line-height: 10vmin;
+        transition: all 0.25s ease-out;
+        margin-left: 1vmin;
+    }
+    
+    .menu_item {
+        width: inherit;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    
+    .menu__link:hover,
+    .menu__link:focus,
+    .menu__link:active {
+        color: white;
+        outline: none;
+    }
+    
+    .menu-toggler {
+        border-radius: calc(var(--toggler-line-size) / 2);
+        display: block;
+        width: var(--toggler-size);
+        height: var(--toggler-size);
+        position: fixed;
+        top: var(--toggler-offset-top);
+        left: var(--toggler-offset-left);
+        cursor: pointer;
+        z-index: 1;
+    }
+    
+    .menu-toggler__line {
+        height: var(--toggler-line-size);
+        background: var(--toggler-color);
+        position: absolute;
+        border-radius: calc(var(--toggler-line-size) / 2);
+        left: 0;
+        right: 0;
+        transition: all 0.25s ease-out;
+    }
+    
+    .menu-toggler__line:nth-child(1) {
+        top: calc(var(--toggler-line-size) * 1 + (var(--toggler-line-size) * (1 - 2)));
+    }
+    
+    .menu-toggler__line:nth-child(2) {
+        top: calc(var(--toggler-line-size) * 2 + (var(--toggler-line-size) * (2 - 2)));
+    }
+    
+    .menu-toggler__line:nth-child(3) {
+        top: calc(var(--toggler-line-size) * 3 + (var(--toggler-line-size) * (3 - 2)));
+    }
+    
+    .input-toggler {
+        position: absolute;
+        left: -100%;
+    }
+    
+    .input-toggler:focus~.menu-toggler {
+        outline: 1px dotted;
+    }
+    
+    .input-toggler:checked~.menu-toggler .menu-toggler__line:not(:first-child):not(:last-child) {
+        opacity: 0;
+    }
+    
+    .input-toggler:checked~.menu-toggler .menu-toggler__line:first-child,
+    .input-toggler:checked~.menu-toggler .menu-toggler__line:last-child {
+        background-color: var(--toggler-color-hover);
+    }
+    
+    .input-toggler:checked~.menu-toggler .menu-toggler__line:first-child {
+        transform: translateY(calc(var(--toggler-line-size) * (var(--toggler-line-number) - 1))) rotate(45deg);
+    }
+    
+    .input-toggler:checked~.menu-toggler .menu-toggler__line:last-child {
+        transform: translateY(calc(-1 * var(--toggler-line-size) * (var(--toggler-line-number) - 1))) rotate(-45deg);
+    }
+    
+    .input-toggler:checked~.sidebar {
+        transform: translateX(0);
+        opacity: 0.98;
+    }
+    
+    .wrapper {
+        height: calc(100vh - 50px);
+    }
