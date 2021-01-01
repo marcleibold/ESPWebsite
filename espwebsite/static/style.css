@@ -5,7 +5,7 @@
     }
     
      :root {
-        --sidebar-width: 300px;
+        --sidebar-width: 250px;
         --toggler-size: 30px;
         --toggler-line-number: 3;
         --toggler-line-size: calc(var(--toggler-size) / (var(--toggler-line-number) + var(--toggler-line-number) - 1));
@@ -22,7 +22,7 @@
     }
     
     html {
-        font-family: Mierb, Inter, arial, sans-serif;
+        font-family: "Inter UI", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !important;
         font-size: 0.8rem;
         height: 100%;
         font-weight: bold;
@@ -30,7 +30,7 @@
     
     .wrapper {
         min-width: 100vw;
-        background: #112299;
+        background: #1b1a20;
         display: flex;
         position: absolute;
         height: inherit;
@@ -44,7 +44,7 @@
     .sidebar {
         width: var(--sidebar-width);
         transform: translateX(calc(var(--sidebar-width) * -1));
-        background: #2438ca;
+        background: #1d1d25;
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
@@ -79,7 +79,7 @@
         font-weight: 100;
         text-decoration: none;
         font-size: 4vh;
-        line-height: 10vh;
+        line-height: 8vh;
         transition: all 0.25s ease-out;
         padding-left: 1vh;
     }
@@ -90,7 +90,7 @@
         flex-direction: column;
         justify-content: center;
         border-top: 1px solid black;
-        background: #2438ca;
+        background: #1d1d25;
     }
     
     .menu__link:hover,

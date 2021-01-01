@@ -21,9 +21,9 @@
       </label>
         <nav id="sidebar" class="sidebar" role="navigation" aria-labelledby="menuTogglerLabel" aria-hidden="true">
             <ul id="menubar" class="menu" role="menubar" aria-orientation="vertical">
-                <li class="menu_item" role "none"><a class="menu__link" href="#" role="menuitem" tabindex="-1">CONTROLS</a></li>
-                <li class="menu_item" role "none"><a class="menu__link" href="#" role="menuitem" tabindex="-1">SETUP</a></li>
-                <li class="menu_item" role "none"><a class="menu__link" href="#" role="menuitem" tabindex="-1">NETWORK</a></li>
+                <li class="menu_item" role "none"><a class="menu__link" href="#" role="menuitem" tabindex="-1">Controls</a></li>
+                <li class="menu_item" role "none"><a class="menu__link" href="#" role="menuitem" tabindex="-1">Setup</a></li>
+                <li class="menu_item" role "none"><a class="menu__link" href="#" role="menuitem" tabindex="-1">Network</a></li>
             </ul>
         </nav>
         <main class="content">
@@ -57,11 +57,11 @@
             for (let menuLink of menuLinks) {
                 menuLink.addEventListener('click', function() {
                     for (let menuItem of menuItems) {
-                        menuItem.style.backgroundColor = "#2438ca";
+                        menuItem.style.backgroundColor = "#1d1d25";
                         menuItem.style.boxShadow = "";
                     }
-                    menuLink.parentElement.style.backgroundColor = "#112299";
-                    menuLink.parentElement.style.boxShadow = "inset 0 8px 5px -5px rgba(0,0,0,0.5), inset 0 -8px 5px -5px rgba(0,0,0,0.5)";
+                    menuLink.parentElement.style.backgroundColor = "#1b1a20";
+                    menuLink.parentElement.style.boxShadow = "inset 0 8px 5px -5px rgba(0,0,0,0.2), inset 0 -8px 5px -5px rgba(0,0,0,0.2)";
                 });
             }
         </script>
