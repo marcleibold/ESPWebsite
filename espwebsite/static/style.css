@@ -26,6 +26,7 @@
         font-size: 0.8rem;
         height: 100%;
         font-weight: bold;
+        overflow-x: hidden;
     }
     
     .wrapper {
@@ -34,6 +35,15 @@
         display: flex;
         position: absolute;
         height: inherit;
+    }
+    
+    .topbar {
+        background: #1d1d25;
+        box-shadow: 3px 0 5px 0 rgba(0, 0, 0, 0.5);
+        height: 50px;
+        position: absolute;
+        top: 0;
+        width: 100vw;
     }
     
     .sidebar,
@@ -50,10 +60,9 @@
         justify-content: flex-start;
         align-items: center;
         position: absolute;
-        top: 0;
+        margin-top: 50px;
         height: 100vh;
         opacity: 0.5;
-        padding-top: 5vh;
     }
     
     .content {
@@ -162,7 +171,7 @@
     .input-toggler:checked~.sidebar {
         transform: translateX(0);
         opacity: 0.98;
-        box-shadow: 3px 0 5px 0 rgba(0, 0, 0, 0.5);
+        box-shadow: 8px 0 5px -5px rgba(0, 0, 0, 0.5);
     }
     
     .wrapper {
