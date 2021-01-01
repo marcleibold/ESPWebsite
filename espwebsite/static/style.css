@@ -39,7 +39,7 @@
         background: #1d1d25;
         box-shadow: 3px 0 5px 0 rgba(0, 0, 0, 0.5);
         height: 50px;
-        position: absolute;
+        position: fixed;
         top: 0;
         width: 100vw;
     }
@@ -57,7 +57,7 @@
         flex-direction: column;
         justify-content: flex-start;
         align-items: center;
-        position: absolute;
+        position: fixed;
         margin-top: 50px;
         height: 100vh;
         opacity: 0.5;
