@@ -26,6 +26,8 @@
         font-weight: bold;
         overflow-x: hidden;
         background-color: #1b1a20;
+        color: white;
+        -webkit-tap-highlight-color: transparent;
     }
     
     .wrapper {
@@ -67,8 +69,10 @@
         width: 100%;
         display: flex;
         align-items: center;
-        justify-content: center;
+        justify-content: flex-start;
         flex-direction: column;
+        margin-top: 50px;
+        padding: 20px;
     }
     
     .menu {
@@ -81,7 +85,7 @@
     }
     
     .menu__link {
-        color: lightgray;
+        color: white;
         font-weight: 100;
         text-decoration: none;
         font-size: 4vh;
@@ -167,7 +171,7 @@
     
     .input-toggler:checked~.sidebar {
         transform: translateX(0);
-        opacity: 0.98;
+        opacity: 1;
         box-shadow: 8px 0 5px -5px rgba(0, 0, 0, 0.5);
     }
     
