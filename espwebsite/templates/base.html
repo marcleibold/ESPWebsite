@@ -9,6 +9,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="../static/style.css" type="text/css" />
     <link rel="icon" href="../static/favicon.png">
+
+    <script src="https://cdn.jsdelivr.net/npm/@jaames/iro@5"></script>
+
 </head>
 
 <body>
@@ -46,7 +49,27 @@
                 - Errors?
                 - Log           
             -->
-            <h1>Content</h1>
+            <div class="controlsWrapper">
+                <h1>{ESP Name}</h1>
+                <div id="picker" class="colorPicker"></div>
+                <!-- picker id will be {ESP Name} + picker -->
+                <h3 style="padding-bottom: 10px; border-bottom: 1px solid black;">Custom Colors</h3>
+                <div id="custom" class="customColorWrapper">
+                    <div id="custom1" class="customColor" style="background-color: red;"></div>
+                    <div id="custom2" class="customColor" style="background-color: green;"></div>
+                    <div id="custom3" class="customColor" style="background-color: blue;"></div>
+                </div>
+                <!-- custom Color Wrapper id will be {ESP Name} + custom -->
+                <!-- custom Color id will be {ESP Name} + custom + {custom_id} -->
+            </div>
+            <script type="text/javascript">
+                var colorPicker = new iro.ColorPicker("#picker", {
+                    width: 320,
+                    color: "#fff",
+                    borderColor: "white",
+                    borderWidth: 2
+                });
+            </script>
         </main>
         <script type="text/javascript">
             let menuToggler = document.getElementById('menuToggler');

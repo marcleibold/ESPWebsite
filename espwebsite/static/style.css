@@ -68,11 +68,39 @@
     .content {
         width: 100%;
         display: flex;
-        align-items: stretch;
+        align-items: flex-start;
         justify-content: flex-start;
-        flex-direction: column;
+        flex-direction: row;
         margin-top: 50px;
         padding: 20px;
+    }
+    
+    .controlsWrapper {
+        background-color: #1d1d25;
+        box-shadow: 3px 3px 5px 0px rgba(0, 0, 0, 0.5);
+        padding: 20px;
+        border-radius: 20px;
+        margin: 10px;
+    }
+    
+    .colorPicker {
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+    
+    .customColorWrapper {
+        margin-top: 10px;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+    }
+    
+    .customColor {
+        width: 50px;
+        height: 40px;
+        border-radius: 5px;
+        border: 2px solid white;
+        margin: 5px;
     }
     
     .menu {
