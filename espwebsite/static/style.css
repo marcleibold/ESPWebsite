@@ -181,7 +181,7 @@
     } */
     
     .input-toggler:checked~.menu-toggler .menu-toggler__line:not(:first-child):not(:last-child) {
-        opacity: 1;
+        opacity: 0;
     }
     
     .input-toggler:checked~.menu-toggler .menu-toggler__line:first-child,
