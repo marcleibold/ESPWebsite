@@ -68,7 +68,7 @@
     .content {
         width: 100%;
         display: flex;
-        align-items: center;
+        align-items: stretch;
         justify-content: flex-start;
         flex-direction: column;
         margin-top: 50px;
