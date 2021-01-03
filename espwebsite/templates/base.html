@@ -3,10 +3,10 @@
 
 <head>
     <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge" /> -->
     <title>ESPWebsite</title>
     <meta name="description" content="" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width" />
     <link rel="stylesheet" href="../static/style.css" type="text/css" />
     <link rel="icon" href="../static/favicon.png">
 
@@ -61,12 +61,14 @@
                 <!-- picker id will be {ESP Name} + picker -->
                 <h3 style="padding-bottom: 10px; border-bottom: 1px solid black;">Custom Colors</h3>
                 <div id="custom" class="customColorWrapper">
-                    <div id="custom1" class="customColor" style="background-color: red;"></div>
-                    <div id="custom2" class="customColor" style="background-color: green;"></div>
-                    <div id="custom3" class="customColor" style="background-color: blue;"></div>
+                    <button id="custom1" class="customColor" style="background-color: red;"></button>
+                    <button id="custom2" class="customColor" style="background-color: green;"></button>
+                    <button id="custom3" class="customColor" style="background-color: blue;"></button>
+                    <button id="addColor" class="customColor add">&#43</button>
                 </div>
-                <!-- custom Color Wrapper id will be {ESP Name} + custom -->
-                <!-- custom Color id will be {ESP Name} + custom + {custom_id} -->
+                <!-- custom Color Wrapper id will be {ESP Name} + _custom -->
+                <!-- custom Color id will be {ESP Name} + _custom + {custom_id} -->
+                <!-- add Color button id will be {ESP Name} + _addColor -->
             </div>
             <script type="text/javascript">
                 var colorPicker = new iro.ColorPicker("#picker", {

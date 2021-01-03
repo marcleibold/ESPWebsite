@@ -81,6 +81,7 @@
         padding: 20px;
         border-radius: 20px;
         margin: 10px;
+        touch-action: manipulation;
     }
     
     .colorPicker {
@@ -101,6 +102,27 @@
         border-radius: 5px;
         border: 2px solid black;
         margin: 5px;
+    }
+    
+    .customColor:active,
+    .customColor:focus {
+        outline: none;
+        border-color: white;
+    }
+    
+    .customColor.add {
+        border-color: black;
+        background-color: #1d1d25;
+        font-size: 30px;
+        align-content: center;
+        color: black;
+        font-weight: bold;
+    }
+    
+    .customColor.add:active {
+        outline: none;
+        border-color: white;
+        color: white;
     }
     
     .menu {
