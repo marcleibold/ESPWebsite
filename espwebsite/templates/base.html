@@ -49,35 +49,7 @@
                 - Errors?
                 - Log           
             -->
-            <div class="controlsWrapper">
-                <div class="toprow">
-                    <h1>{ESP Name}</h1>
-                    <label class="switch">
-                    <input type="checkbox">
-                    <span class="slider round"></span>
-                  </label>
-                </div>
-                <div id="picker" class="colorPicker"></div>
-                <!-- picker id will be {ESP Name} + picker -->
-                <h3 style="padding-bottom: 10px; border-bottom: 1px solid black;">Custom Colors</h3>
-                <div id="custom" class="customColorWrapper">
-                    <button id="custom1" class="customColor" style="background-color: red;"></button>
-                    <button id="custom2" class="customColor" style="background-color: green;"></button>
-                    <button id="custom3" class="customColor" style="background-color: blue;"></button>
-                    <button id="addColor" class="customColor add">&#43</button>
-                </div>
-                <!-- custom Color Wrapper id will be {ESP Name} + _custom -->
-                <!-- custom Color id will be {ESP Name} + _custom + {custom_id} -->
-                <!-- add Color button id will be {ESP Name} + _addColor -->
-            </div>
-            <script type="text/javascript">
-                var colorPicker = new iro.ColorPicker("#picker", {
-                    width: 320,
-                    color: "#fff",
-                    borderColor: "#1d1d25",
-                    borderWidth: 2
-                });
-            </script>
+            {{controllers|safe}}
         </main>
         <script type="text/javascript">
             let menuToggler = document.getElementById('menuToggler');
