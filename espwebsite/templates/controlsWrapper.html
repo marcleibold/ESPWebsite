@@ -1,0 +1,23 @@
+<div class="controlsWrapper">
+    <div class="toprow">
+        <h1>phName</h1>
+        <label class="switch">
+        <input type="checkbox">
+        <span class="slider round"></span>
+    </label>
+    </div>
+    <div id="phName_picker" class="colorPicker"></div>
+    <h3 style="padding-bottom: 10px; border-bottom: 1px solid black;">Custom Colors</h3>
+    <div id="phName_custom" class="customColorWrapper">
+        phColors
+        <button id="phName_addColor" class="customColor add">&#43</button>
+    </div>
+</div>
+<script type="text/javascript">
+    var colorPicker = new iro.ColorPicker("#phName_picker", {
+        width: 320,
+        color: "#fff",
+        borderColor: "#1d1d25",
+        borderWidth: 2
+    });
+</script>
