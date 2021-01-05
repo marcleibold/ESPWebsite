@@ -50,6 +50,50 @@
             {{controllers|safe}}
         </main>
         <script type="text/javascript">
+            let content = document.getElementById("content");
+            let menuButtons = document.getElementsByClassName("menu__link");
+            let controlsButton = menuButtons[0];
+            let setupButton = menuButtons[1];
+            let networkButton = menuButtons[2];
+
+
+            controlsButton.addEventListener("click", function() {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        content.innerHTML = this.responseText;
+                        exec_body_scripts(content);
+                    }
+                };
+                xhttp.open("GET", "/controls", true);
+                xhttp.send();
+            });
+
+            setupButton.addEventListener("click", function() {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        content.innerHTML = this.responseText;
+                        exec_body_scripts(content);
+                    }
+                };
+                xhttp.open("GET", "/setup", true);
+                xhttp.send();
+            });
+
+            networkButton.addEventListener("click", function() {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        content.innerHTML = this.responseText;
+                        exec_body_scripts(content);
+                    }
+                };
+                xhttp.open("GET", "/network", true);
+                xhttp.send();
+            });
+        </script>
+        <script type="text/javascript">
             let menuToggler = document.getElementById('menuToggler');
             let menuTogglerLabel = document.getElementById('menuTogglerLabel');
             let sidebar = document.getElementById('sidebar');
@@ -85,6 +129,61 @@
                     menuLink.parentElement.style.boxShadow = "inset 0 8px 5px -5px rgba(0,0,0,0.2), inset 0 -8px 5px -5px rgba(0,0,0,0.2)";
                 });
             }
+        </script>
+        <script>
+            function exec_body_scripts(body_el) {
+                // Finds and executes scripts in a newly added element's body.
+                // Needed since innerHTML does not run scripts.
+                //
+                // Argument body_el is an element in the dom.
+
+                function nodeName(elem, name) {
+                    return elem.nodeName && elem.nodeName.toUpperCase() ===
+                        name.toUpperCase();
+                };
+
+                function evalScript(elem) {
+                    var data = (elem.text || elem.textContent || elem.innerHTML || ""),
+                        head = document.getElementsByTagName("head")[0] ||
+                        document.documentElement,
+                        script = document.createElement("script");
+
+                    script.type = "text/javascript";
+                    try {
+                        // doesn't work on ie...
+                        script.appendChild(document.createTextNode(data));
+                    } catch (e) {
+                        // IE has funky script nodes
+                        script.text = data;
+                    }
+
+                    head.insertBefore(script, head.firstChild);
+                    head.removeChild(script);
+                };
+
+                // main section of function
+                var scripts = [],
+                    script,
+                    children_nodes = body_el.childNodes,
+                    child,
+                    i;
+
+                for (i = 0; children_nodes[i]; i++) {
+                    child = children_nodes[i];
+                    if (nodeName(child, "script") &&
+                        (!child.type || child.type.toLowerCase() === "text/javascript")) {
+                        scripts.push(child);
+                    }
+                }
+
+                for (i = 0; scripts[i]; i++) {
+                    script = scripts[i];
+                    if (script.parentNode) {
+                        script.parentNode.removeChild(script);
+                    }
+                    evalScript(scripts[i]);
+                }
+            };
         </script>
     </div>
 </body>
