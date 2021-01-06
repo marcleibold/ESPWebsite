@@ -71,6 +71,7 @@
         align-items: flex-start;
         justify-content: flex-start;
         flex-direction: row;
+        flex-wrap: wrap;
         margin-top: 50px;
         padding: 20px;
     }
