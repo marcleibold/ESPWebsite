@@ -10,6 +10,13 @@
     <link rel="stylesheet" href="../static/style.css" type="text/css" />
     <link rel="icon" href="../static/favicon.png">
     <script src="https://cdn.jsdelivr.net/npm/@jaames/iro@5"></script>
+    <script type="text/javascript">
+        var loadInterval;
+
+        windows.addEventListener("beforeunload", function() {
+            clearInterval(loadInterval);
+        });
+    </script>
 </head>
 
 <body>
@@ -61,6 +68,7 @@
                 var xhttp = new XMLHttpRequest();
                 xhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
+                        clearInterval(loadInterval);
                         content.innerHTML = this.responseText;
                         exec_body_scripts(content);
                     }
@@ -73,6 +81,7 @@
                 var xhttp = new XMLHttpRequest();
                 xhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
+                        clearInterval(loadInterval);
                         content.innerHTML = this.responseText;
                         exec_body_scripts(content);
                     }
@@ -85,6 +94,7 @@
                 var xhttp = new XMLHttpRequest();
                 xhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
+                        clearInterval(loadInterval);
                         content.innerHTML = this.responseText;
                         exec_body_scripts(content);
                     }

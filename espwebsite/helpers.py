@@ -20,3 +20,13 @@ def getControllersHTML(activeControllers):
         return ""
 
     return controllersHTML
+
+
+def getWaitingDevices():
+    # TODO: implement ESP Network querying
+    devices = [
+        {
+            'mac': 'test-mac'
+        }
+    ]
+    return devices

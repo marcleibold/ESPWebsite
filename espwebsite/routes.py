@@ -1,4 +1,4 @@
-from flask import render_template
+from flask import render_template, jsonify
 from espwebsite import app, config, helpers
 
 
@@ -15,6 +15,11 @@ def controls():
 @ app.route('/setup', methods=['GET'])
 def setup():
     return open("espwebsite/templates/setup.html").read()
+
+
+@ app.route('/waiting', methods=['GET'])
+def getWaitingDevices():
+    return jsonify(helpers.getWaitingDevices())
 
 
 @ app.route('/network', methods=['GET'])
