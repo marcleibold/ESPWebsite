@@ -382,3 +382,8 @@
         outline: none;
         border: 2px solid lightgray;
     }
+    
+    svg {
+        pointer-events: none;
+        -webkit-pointer-events: none;
+    }

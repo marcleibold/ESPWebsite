@@ -114,24 +114,31 @@
                 let waitingDevices = JSON.parse(this.responseText);
                 let waitingDevicesWrapper = document.getElementById("waitingDevicesWrapper");
                 if (document.getElementsByClassName("deviceWrapper").length < waitingDevices.length) {
-                    for (let i = 0; i < waitingDevices.length; i++) {
-                        if (document.getElementById(waitingDevices[i]['mac'] + "_name") === null) {
+                    for (let device of waitingDevices) {
+                        if (document.getElementById(device['mac'] + "_name") === null) {
                             let waitingDeviceTemplate = document.getElementById("waitingDevice").innerHTML;
-                            waitingDeviceTemplate = waitingDeviceTemplate.split("MAC").join(waitingDevices[i]["mac"]);
+                            waitingDeviceTemplate = waitingDeviceTemplate.split("MAC").join(device["mac"]);
                             waitingDevicesWrapper.innerHTML += waitingDeviceTemplate;
-                            let connectButton = document.getElementById(waitingDevices[i]['mac'] + "_connect");
-                            connectButton.addEventListener("click", function() {
-                                connectButton.innerHTML = document.getElementById("connectingTemplate").innerHTML;
-                                connectButton.style.backgroundColor = "lightgray";
-                                connectButton.parentNode.style.alignSelf = "flex-end";
-                            });
+                            let connectButton = document.getElementById(device['mac'] + "_connect");
                         }
+                    }
+                    for (let button of document.getElementsByClassName("connectButton")) {
+                        button.addEventListener("click", function(event) {
+                            console.log(event)
+                            let espName = event.target.parentNode.childNodes[1].childNodes[3].value;
+                            if (espName != "") {
+                                event.target.innerHTML = document.getElementById("connectingTemplate").innerHTML;
+                                event.target.style.backgroundColor = "lightgray";
+                                event.target.parentNode.style.alignSelf = "flex-end";
+                            }
+                        });
                     }
                 }
             }
         };
         xhttp.open("GET", "/waiting", true);
         xhttp.send();
+
     }
 
     loadInterval = setInterval(loadWaitingDevices, 1000);
