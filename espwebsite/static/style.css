@@ -383,6 +383,49 @@
         border: 2px solid lightgray;
     }
     
+    .connectButton {
+        width: 6vh;
+        height: 6vh;
+        margin: 10px;
+        margin-left: 20px;
+        padding: 5px;
+        border-radius: 10px;
+        border: 2px solid lightgray;
+        background-color: #29b5a8;
+        box-shadow: 0 4px rgb(109, 109, 109);
+    }
+    
+    .disconnectButton {
+        width: 6vh;
+        height: 6vh;
+        margin: 10px;
+        margin-left: 20px;
+        padding: 5px;
+        border-radius: 10px;
+        border: 2px solid lightgray;
+        background-color: #b52930;
+        box-shadow: 0 4px rgb(109, 109, 109);
+    }
+    
+    .disconnectButton:active {
+        background-color: white;
+        box-shadow: 0 1px rgb(58, 58, 58);
+        transform: translateY(3px);
+    }
+    
+    .disconnectButton:active,
+    .disconnectButton:focus {
+        outline: none;
+        border: 2px solid lightgray;
+    }
+    
+    .uptime {
+        margin: 5px;
+        height: 32px;
+        color: white;
+        padding: 5px;
+    }
+    
     svg {
         pointer-events: none;
         -webkit-pointer-events: none;

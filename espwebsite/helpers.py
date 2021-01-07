@@ -36,3 +36,8 @@ def getWaitingDevices():
         }
     ]
     return devices
+
+
+def connect(mac):
+    # TODO: implement proper connection workflow
+    return 1
