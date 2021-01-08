@@ -1,3 +1,18 @@
+waitingDevices = [
+    {
+        'mac': '00:1A:3F:F1:4C:C6'
+    },
+    {
+        'mac': '02:9B:B0:CB:AA:FC'
+    },
+    {
+        'mac': '10:F0:05:40:F3:22'
+    }
+]
+
+connectedDevices = []
+
+
 def getControllersHTML(activeControllers):
     controllersHTML = ""
     controllerHTMLTemplate = open(
@@ -24,20 +39,20 @@ def getControllersHTML(activeControllers):
 
 def getWaitingDevices():
     # TODO: implement ESP Network querying
-    devices = [
-        {
-            'mac': '00:1A:3F:F1:4C:C6'
-        },
-        {
-            'mac': '02:9B:B0:CB:AA:FC'
-        },
-        {
-            'mac': '10:F0:05:40:F3:22'
-        }
-    ]
-    return devices
+    return waitingDevices
 
 
-def connect(mac):
+def getConnectedDevices():
+    return connectedDevices
+
+
+def connect(data):
     # TODO: implement proper connection workflow
-    return 1
+    global connectedDevices
+
+    for device in waitingDevices:
+        if device["mac"] == data["mac"]:
+            waitingDevices.remove(device)
+            connectedDevices += [device]
+            return 1
+    return 0

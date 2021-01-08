@@ -44,4 +44,4 @@ def connect():
 
 @ app.route('/connected', methods=['GET'])
 def getConnectedDevices():
-    pass
+    return jsonify(helpers.getConnectedDevices())

@@ -323,8 +323,8 @@
         xhttp.send();
 
 
-        xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function() {
+        let xhttp2 = new XMLHttpRequest();
+        xhttp2.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
                 let connectedDevices = JSON.parse(this.responseText);
                 let connectedDevicesWrapper = document.getElementById("connectedDevicesWrapper");
@@ -340,8 +340,8 @@
                 }
             }
         }
-        xhttp.open("GET", "/connected", true);
-        xhttp.send();
+        xhttp2.open("GET", "/connected", true);
+        xhttp2.send();
     }
 
     loadInterval = setInterval(loadDevices, 1000);
