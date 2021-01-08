@@ -56,3 +56,12 @@ def connect(data):
             connectedDevices += [device]
             return 1
     return 0
+
+
+def disconnect(data):
+    # TODO: implement proper disconnecting workflow
+    for device in connectedDevices:
+        if device["mac"] == data["mac"]:
+            connectedDevices.remove(device)
+            return 1
+    return 0

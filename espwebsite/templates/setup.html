@@ -297,7 +297,9 @@
 
                                         connectedWrapper.innerHTML += connectedDevice;
 
-                                        document.getElementById(response["mac"] + "_disconnect").parentNode.style.alignSelf = "flex-end";
+                                        let connectedDeviceButton = document.getElementById(response["mac"] + "_disconnect");
+                                        connectedDeviceButton.parentNode.style.alignSelf = "flex-end";
+                                        connectedDeviceButton.addEventListener("click", disconnect)
 
                                         let toBeRemoved = document.getElementById(response["mac"] + "_connect").parentNode;
                                         toBeRemoved.parentNode.removeChild(toBeRemoved);
@@ -337,6 +339,11 @@
                             connectedDevicesWrapper.innerHTML += connectedDeviceTemplate;
                         }
                     }
+                    for (let button of document.getElementsByClassName("disconnectButton")) {
+                        console.log(button)
+                        button.addEventListener("click", disconnect);
+                    }
+
                 }
             }
         }
@@ -345,4 +352,25 @@
     }
 
     loadInterval = setInterval(loadDevices, 1000);
+
+    let disconnect = function(event) {
+        let mac = event.target.id.split("_")[0];
+        if (mac != "") {
+
+            let data = {
+                'mac': mac
+            }
+
+            xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    let toBeRemoved = document.getElementById(mac + "_disconnect").parentNode;
+                    toBeRemoved.parentNode.removeChild(toBeRemoved);
+                }
+            }
+            xhr.open("POST", "/disconnect", true);
+            xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+            xhr.send(JSON.stringify(data));
+        }
+    }
 </script>

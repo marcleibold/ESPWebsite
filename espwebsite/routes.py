@@ -45,3 +45,16 @@ def connect():
 @ app.route('/connected', methods=['GET'])
 def getConnectedDevices():
     return jsonify(helpers.getConnectedDevices())
+
+
+@ app.route('/disconnect', methods=['POST'])
+def disconnect():
+    data = request.get_json(force=True)
+    if data:
+        status = helpers.disconnect(data)
+        if status == 1:
+            return Response(status=200)
+        else:
+            return Response(status=409)
+    else:
+        return Response(status=409)
