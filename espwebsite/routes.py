@@ -40,3 +40,8 @@ def connect():
             return Response(status=409)
     else:
         return Response(status=409)
+
+
+@ app.route('/connected', methods=['GET'])
+def getConnectedDevices():
+    pass
