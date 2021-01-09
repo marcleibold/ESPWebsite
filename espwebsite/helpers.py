@@ -4,9 +4,9 @@ waitingDevices = [
     {
         'mac': '00:1A:3F:F1:4C:C6'
     },
-    {
-        'mac': '02:9B:B0:CB:AA:FC'
-    },
+    # {
+    #     'mac': '02:9B:B0:CB:AA:FC'
+    # },
     {
         'mac': '10:F0:05:40:F3:22'
     }

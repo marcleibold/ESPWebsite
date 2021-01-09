@@ -306,6 +306,17 @@
                             }
                         });
                     }
+                } else if (waitingDevicesWrapper.getElementsByClassName("deviceWrapper").length > waitingDevices.length) {
+                    let connectButtons = document.getElementsByClassName("connectButton");
+                    for (let button of connectButtons) {
+                        let mac = button.id.split("_")[0];
+                        let deviceWrapper = button.parentNode;
+                        let isInList = false;
+                        for (let device of waitingDevices) {
+                            if (device['mac'] == mac) isInList = true;
+                        }
+                        if (isInList == false) deviceWrapper.parentNode.removeChild(deviceWrapper);
+                    }
                 }
             }
         };
@@ -333,6 +344,17 @@
                         button.addEventListener("click", disconnect);
                     }
 
+                } else if (connectedDevicesWrapper.getElementsByClassName("deviceWrapper").length > connectedDevices.length) {
+                    let disconnectButtons = document.getElementsByClassName("disconnectButton");
+                    for (let button of disconnectButtons) {
+                        let mac = button.id.split("_")[0];
+                        let deviceWrapper = button.parentNode;
+                        let isInList = false;
+                        for (let device of connectedDevices) {
+                            if (device['mac'] == mac) isInList = true;
+                        }
+                        if (isInList == false) deviceWrapper.parentNode.removeChild(deviceWrapper);
+                    }
                 }
             }
         }
