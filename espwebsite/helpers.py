@@ -54,8 +54,12 @@ def connect(data):
     time.sleep(1)
     for device in waitingDevices:
         if device["mac"] == data["mac"]:
+            newDevice = {
+                'name': data['name'],
+                'mac': data['mac']
+            }
             waitingDevices.remove(device)
-            connectedDevices += [device]
+            connectedDevices += [newDevice]
             return 1
     return 0
 

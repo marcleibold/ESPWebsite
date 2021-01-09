@@ -79,7 +79,7 @@
 </template>
 
 <template id="connectedDevice">
-	<div class="deviceWrapper">
+	<div class="deviceWrapper" style="align-self: flex-end;">
 		<div style="display: flex; flex-direction: column;">
 			<div style="display: flex; flex-direction: row; justify-content: space-between; margin-bottom: 5px; padding: 5px; border-bottom: 1px solid black">
 				<h2>Name</h2>
@@ -287,20 +287,8 @@
                                 xhr = new XMLHttpRequest();
                                 xhr.onreadystatechange = function() {
                                     if (this.readyState == 4 && this.status == 201) {
-                                        let deviceWrapper = event.target.parentNode;
-                                        let connectedWrapper = document.getElementById("connectedDevicesWrapper");
+
                                         let response = JSON.parse(this.responseText);
-                                        let connectedTemplate = document.getElementById("connectedDevice").innerHTML;
-
-                                        connectedDevice = connectedTemplate.split("MAC").join(response["mac"]);
-                                        connectedDevice = connectedDevice.split("Name").join(response["name"]);
-
-                                        connectedWrapper.innerHTML += connectedDevice;
-
-                                        let connectedDeviceButton = document.getElementById(response["mac"] + "_disconnect");
-                                        connectedDeviceButton.parentNode.style.alignSelf = "flex-end";
-                                        connectedDeviceButton.addEventListener("click", disconnect)
-
                                         let toBeRemoved = document.getElementById(response["mac"] + "_connect").parentNode;
                                         toBeRemoved.parentNode.removeChild(toBeRemoved);
 
@@ -339,6 +327,7 @@
                             connectedDevicesWrapper.innerHTML += connectedDeviceTemplate;
                         }
                     }
+
                     for (let button of document.getElementsByClassName("disconnectButton")) {
                         console.log(button)
                         button.addEventListener("click", disconnect);
