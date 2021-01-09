@@ -1,3 +1,5 @@
+import time
+
 waitingDevices = [
     {
         'mac': '00:1A:3F:F1:4C:C6'
@@ -49,7 +51,7 @@ def getConnectedDevices():
 def connect(data):
     # TODO: implement proper connection workflow
     global connectedDevices
-
+    time.sleep(1)
     for device in waitingDevices:
         if device["mac"] == data["mac"]:
             waitingDevices.remove(device)
