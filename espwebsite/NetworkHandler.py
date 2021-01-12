@@ -18,6 +18,8 @@ class NetworkHandler:
 
     def search(self):
         """Get open Wifi networks nearby
+        Returns:
+            wifiNetworks (list): list of wifi network names
         """
         wifiNetworks = Cell.all(self.wifiInterface)
         return wifiNetworks
@@ -27,6 +29,9 @@ class NetworkHandler:
 
         Args:
             client (dict): client data
+
+        Returns:
+            status (str): Status code of connection (1: success, 0: failure)
         """
         # TODO: implement api call to connect ESP to wifi
         pass
@@ -36,12 +41,17 @@ class NetworkHandler:
 
         Args:
             networks (list): list of networks to query
+
+        Returns:
+            networkData (dict): dict of networks and connected devices
         """
         # TODO: return dict of networks with containing devices
         pass
 
     def getMicrocontrollerNetworks(self):
         """get nearby networks which are hosted by ESP8266's
+        Returns:
+            microcontrollerNetworks (list): list of networks hosted by the ESP8266's
         """
         available = self.search()
         networkData = self.queryNetworks(available)
