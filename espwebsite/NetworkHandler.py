@@ -31,9 +31,20 @@ class NetworkHandler:
             client (dict): client data
 
         Returns:
-            status (str): Status code of connection (1: success, 0: failure)
+            status (int): Status code of connection (1: success, 0: failure)
         """
-        # TODO: implement api call to connect ESP to wifi
+        # TODO: implement api call to connect ESP to network
+        pass
+
+    def disconnect(self, client):
+        """Disconnect a client from the main network to
+
+        Args:
+            client (dict): client data
+        Returns:
+            status (int): Status code of the disconnecting procedure (1: success, 0: failure)
+        """
+        # TODO : implement api call to disconnect ESP from network
         pass
 
     def queryNetworks(self, networks):
