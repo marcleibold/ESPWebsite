@@ -4,6 +4,9 @@ The ESPs will be used to control LED strips.
 
 Work in progress.
 
+#### Corresponding Repository:
+[ESP API](https://github.com/marcleibold/ESPLED)
+
 ## Prerequisites
 - Linux with NetworkManager
 - Machine needs to be connected to a Network via Ethernet
