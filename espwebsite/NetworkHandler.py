@@ -1,5 +1,5 @@
-from wifi import Cell
 import netifaces
+import subprocess
 
 
 class NetworkHandler:
@@ -22,8 +22,17 @@ class NetworkHandler:
         #### Returns:
             wifiNetworks (list): list of wifi network names
         """
-        wifiNetworks = Cell.all(self.wifiInterface)
-        return wifiNetworks
+        output = subprocess.check_output(
+            "sudo iw dev wlp41s0 scan | grep SSID", shell=True).decode("utf-8")
+        networks_raw = output.split("\n")
+        networks = set()
+        for network in networks_raw:
+            parts = network.split("SSID: ")
+            if len(parts) > 1:
+                ssid = parts[1]
+                if len(ssid) > 0:
+                    networks.add(ssid)
+        return networks
 
     def connect(self, client):
         """Connect a client to the main network
@@ -58,7 +67,9 @@ class NetworkHandler:
             networkData (dict): dict of networks and connected devices
         """
         # TODO: return dict of networks with containing devices
-        pass
+        networks = self.search()
+        for network in networks:
+            pass
 
     def getMicrocontrollerNetworks(self):
         """get nearby networks which are hosted by ESP8266's

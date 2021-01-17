@@ -1,3 +1,2 @@
 Flask>=1.1.2
-wifi>=0.3.8
 netifaces>=0.10.4
