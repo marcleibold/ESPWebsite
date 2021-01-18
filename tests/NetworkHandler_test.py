@@ -9,4 +9,5 @@ def netHandler():
 
 def test_search(netHandler):
     networks = netHandler.search()
-    assert type(networks) == list
+    print(networks)
+    assert type(networks) == set

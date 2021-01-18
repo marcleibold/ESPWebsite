@@ -1,5 +1,6 @@
 import netifaces
 import subprocess
+import re
 
 
 class NetworkHandler:
@@ -22,16 +23,20 @@ class NetworkHandler:
         #### Returns:
             wifiNetworks (list): list of wifi network names
         """
-        output = subprocess.check_output(
-            "sudo iw dev wlp41s0 scan | grep SSID", shell=True).decode("utf-8")
-        networks_raw = output.split("\n")
+        try:
+            output = subprocess.check_output(
+                "iwlist {} scan | grep -E 'Address|ESSID'".format(self.wifiInterface), shell=True).decode("utf-8")
+        except:
+            return set()
+        networks_raw = re.split("Cell\ [0-9]{2}\ -\ ", output)
         networks = set()
         for network in networks_raw:
-            parts = network.split("SSID: ")
+            parts = re.split("\s{2,}", network)
             if len(parts) > 1:
-                ssid = parts[1]
-                if len(ssid) > 0:
-                    networks.add(ssid)
+                if len(parts[0]) > 0:
+                    ssid = parts[1].split("ID:")[1].strip().strip('"')
+                    mac = parts[0].split("s:")[1].strip()
+                    networks.add((ssid, mac))
         return networks
 
     def connect(self, client):
