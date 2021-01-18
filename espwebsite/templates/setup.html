@@ -256,7 +256,17 @@
     </div>
 </div>
 <script type="text/javascript">
-    function loadDevices() {
+    function sleep(milliseconds) {
+        let timeStart = new Date().getTime();
+        while (true) {
+            let elapsedTime = new Date().getTime() - timeStart;
+            if (elapsedTime > milliseconds) {
+                break;
+            }
+        }
+    }
+
+    function loadWaiting() {
 
         let xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function() {
@@ -291,6 +301,8 @@
                                         let response = JSON.parse(this.responseText);
                                         let toBeRemoved = document.getElementById(response["mac"] + "_connect").parentNode;
                                         toBeRemoved.parentNode.removeChild(toBeRemoved);
+                                        sleep(5000);
+                                        loadConnected();
 
                                     } else if (this.readyState == 4 && this.status == 409) {
                                         event.target.innerHTML = document.getElementById("connectButtonTemplate").innerHTML;
@@ -302,7 +314,6 @@
                                 xhr.open("PUT", "/connect", true);
                                 xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
                                 xhr.send(JSON.stringify(data));
-
                             }
                         });
                     }
@@ -324,6 +335,10 @@
         xhttp.send();
 
 
+
+    }
+
+    function loadConnected() {
         let xhttp2 = new XMLHttpRequest();
         xhttp2.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
@@ -362,9 +377,10 @@
         xhttp2.send();
     }
 
-    loadInterval = setInterval(loadDevices, 1000);
+    loadInterval = setInterval(loadWaiting, 1000);
+    loadConnected();
 
-    let disconnect = function(event) {
+    function disconnect(event) {
         let mac = event.target.id.split("_")[0];
         if (mac != "") {
 

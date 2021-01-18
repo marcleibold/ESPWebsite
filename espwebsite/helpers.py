@@ -1,18 +1,8 @@
+from espwebsite.NetworkHandler import NetworkHandler
 import time
 
-waitingDevices = [
-    {
-        'mac': '00:1A:3F:F1:4C:C6'
-    },
-    # {
-    #     'mac': '02:9B:B0:CB:AA:FC'
-    # },
-    {
-        'mac': '10:F0:05:40:F3:22'
-    }
-]
-
-connectedDevices = []
+deviceData = {}
+networkHandler = NetworkHandler()
 
 
 def getControllersHTML(activeControllers):
@@ -40,34 +30,46 @@ def getControllersHTML(activeControllers):
 
 
 def getWaitingDevices():
-    # TODO: implement ESP Network querying
+    networks = networkHandler.getMicrocontrollerNetworks()
+    waitingDevices = []
+    for network in networks:
+        waitingDevices += [{
+            "mac": network.split("_")[0]
+        }]
     return waitingDevices
 
 
 def getConnectedDevices():
+    connectedDevices = networkHandler.getConnected()
+    for device in connectedDevices:
+        mac = device["mac"]
+        if device["mac"] in deviceData:
+            device["name"] = deviceData[mac]["name"]
+            for key in device:
+                deviceData[mac][key] = device[key]
+        else:
+            deviceData[mac] = device
+            deviceData[mac]["name"] = mac
+            device["name"] = device["mac"]
     return connectedDevices
 
 
 def connect(data):
-    # TODO: implement proper connection workflow
-    global connectedDevices
-    time.sleep(1)
-    for device in waitingDevices:
-        if device["mac"] == data["mac"]:
-            newDevice = {
-                'name': data['name'],
-                'mac': data['mac']
-            }
-            waitingDevices.remove(device)
-            connectedDevices += [newDevice]
-            return 1
+    mac = data["mac"]
+    name = data["name"]
+    isConnected = networkHandler.connectClient(data)
+    if isConnected:
+        if mac not in deviceData:
+            deviceData[mac] = {"mac": mac}
+        deviceData[mac]["name"] = name
+        return 1
     return 0
 
 
 def disconnect(data):
-    # TODO: implement proper disconnecting workflow
-    for device in connectedDevices:
-        if device["mac"] == data["mac"]:
-            connectedDevices.remove(device)
-            return 1
+    print(deviceData)
+    data["ip"] = deviceData[data["mac"]]["ip"]
+    isDisconnected = networkHandler.disconnectClient(data)
+    if isDisconnected:
+        return 1
     return 0
