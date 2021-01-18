@@ -1,6 +1,8 @@
 import netifaces
 import subprocess
 import re
+import os
+import time
 
 
 class NetworkHandler:
@@ -39,7 +41,26 @@ class NetworkHandler:
                     networks.add((ssid, mac))
         return networks
 
-    def connect(self, client):
+    def connect(self, ssid, password):
+        """Connect self to a network
+
+        #### Args:
+            ssid (string): The SSID of the network
+            password (string): The password for the network
+        #### Returns:
+            status (boolean): Connection Status (True=connected)
+        """
+        pass
+
+    def disconnect(self, ssid):
+        """Disconnect self from network
+
+        Args:
+            ssid (string): SSID to disconnect from
+        """
+        pass
+
+    def connectClient(self, client):
         """Connect a client to the main network
 
         #### Args:
@@ -51,7 +72,7 @@ class NetworkHandler:
         # TODO: implement api call to connect ESP to network
         pass
 
-    def disconnect(self, client):
+    def disconnectClient(self, client):
         """Disconnect a client from the main network to
 
         #### Args:
