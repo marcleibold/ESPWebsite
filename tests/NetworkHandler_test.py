@@ -4,7 +4,8 @@ from espwebsite.NetworkHandler import NetworkHandler
 ssid = "50:02:91:FD:EB:59_network"
 password = "espdefault"
 client = {
-    "mac": "50:02:91:FD:EB:59"
+    "mac": "50:02:91:FD:EB:59",
+    "ip": "192.168.178.49"
 }
 
 
@@ -29,5 +30,9 @@ def test_disconnect(netHandler):
 
 def test_connectClient(netHandler):
     status = netHandler.connectClient(client)
-    print(status)
-    assert type(status) == bool
+    assert status == True
+
+
+def test_disconnectClient(netHandler):
+    status = netHandler.disconnectClient(client)
+    assert status == True
