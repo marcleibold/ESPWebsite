@@ -86,7 +86,7 @@ class NetworkHandler:
             client (dict): client data
 
         #### Returns:
-            status (int): Status code of connection (1: success, 0: failure)
+            status (boolean): Status of connection (True: success, False: failure)
         """
         mac = client["mac"]
         espNetworks = self.getMicrocontrollerNetworks()
@@ -105,7 +105,7 @@ class NetworkHandler:
             "pass": os.getenv("WIFI_PASS")
         }
 
-        cmd = 'curl -XPUT http://192.168.4.1:8080/connect -d "{}" -v -m 5'.format(
+        cmd = 'curl -XPUT http://192.168.4.1:8080/connect -d "{}" -v -m 2'.format(
             str(creds))
         try:
             output = subprocess.check_output(cmd, shell=True)
@@ -122,10 +122,22 @@ class NetworkHandler:
         #### Args:
             client (dict): client data
         #### Returns:
-            status (int): Status code of the disconnecting procedure (1: success, 0: failure)
+            status (boolean): Status of the disconnecting procedure (True: success, False: failure)
         """
-        # TODO : implement api call to disconnect ESP from network
-        pass
+
+        if self.connect(os.getenv("WIFI_SSID"), os.getenv("WIFI_PASS")):
+
+            cmd = "curl -XPUT http://{}:8080/disconnect -v -m 2".format(
+                client["ip"])
+            try:
+                output = subprocess.check_output(cmd, shell=True)
+            except subprocess.CalledProcessError as e:
+                if "28" in str(e):
+                    return True
+            else:
+                return False
+        else:
+            return False
 
     def getMicrocontrollerNetworks(self):
         """Query Wifi Networks for Microcontrollers
