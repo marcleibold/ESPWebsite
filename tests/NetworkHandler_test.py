@@ -36,3 +36,8 @@ def test_connectClient(netHandler):
 def test_disconnectClient(netHandler):
     status = netHandler.disconnectClient(client)
     assert status == True
+
+
+def test_getConnected(netHandler):
+    devices = netHandler.getConnected()
+    assert type(devices) == list

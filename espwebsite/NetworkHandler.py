@@ -2,8 +2,8 @@ import netifaces
 import subprocess
 import re
 import os
-import time
 import dotenv
+import json
 
 
 class NetworkHandler:
@@ -159,3 +159,23 @@ class NetworkHandler:
             if pattern.match(network):
                 espNetworks.add(network)
         return list(espNetworks)
+
+    def getConnected(self):
+        """Get all ESPs which are connected to the main network
+        #### Returns:
+            devices (list)
+        """
+        devices = []
+        for i in range(2, 255):
+            cmd = "curl -XGET http://192.168.178.{}:8080/ping -m 0.1".format(i)
+            try:
+                output = subprocess.check_output(cmd, shell=True)
+            except:
+                continue
+            else:
+                if len(output) > 1:
+                    output = output.decode("utf-8").strip()
+                    data = json.loads(output)
+                    data["ip"] = "192.168.178.{}".format(i)
+                    devices.append(data)
+        return devices
