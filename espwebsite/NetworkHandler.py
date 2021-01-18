@@ -50,7 +50,20 @@ class NetworkHandler:
         #### Returns:
             status (boolean): Connection Status (True=connected)
         """
-        pass
+        output = ""
+        for _ in range(5):  # amount of retries
+            try:
+                output = subprocess.check_output(
+                    "nmcli d wifi connect {} password {}".format(ssid, password), shell=True).decode("utf-8")
+            except:
+                continue
+            else:
+                break
+
+        if "success" in output:
+            return True
+        else:
+            return False
 
     def disconnect(self, ssid):
         """Disconnect self from network

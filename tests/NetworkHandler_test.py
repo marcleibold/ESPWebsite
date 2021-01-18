@@ -11,3 +11,9 @@ def test_search(netHandler):
     networks = netHandler.search()
     print(networks)
     assert type(networks) == set
+
+
+def test_connect(netHandler):
+    ssid = "50:02:91:FD:EB:59_network"
+    password = "espdefault"
+    assert netHandler.connect(ssid, password) == True
