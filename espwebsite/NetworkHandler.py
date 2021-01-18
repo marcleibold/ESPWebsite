@@ -158,4 +158,4 @@ class NetworkHandler:
         for network in networks:
             if pattern.match(network):
                 espNetworks.add(network)
-        return espNetworks
+        return list(espNetworks)
