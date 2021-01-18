@@ -65,13 +65,18 @@ class NetworkHandler:
         else:
             return False
 
-    def disconnect(self, ssid):
+    def disconnect(self):
         """Disconnect self from network
-
-        Args:
-            ssid (string): SSID to disconnect from
         """
-        pass
+        for _ in range(5):  # number of retries
+            try:
+                output = subprocess.check_output(
+                    "nmcli d disconnect {}".format(self.wifiInterface), shell=True)
+                assert "success" in output
+            except:
+                continue
+            else:
+                break
 
     def connectClient(self, client):
         """Connect a client to the main network
