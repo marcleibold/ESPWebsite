@@ -55,7 +55,7 @@ class NetworkHandler:
         for _ in range(5):  # amount of retries
             try:
                 output = subprocess.check_output(
-                    "nmcli d wifi connect {} password {}".format(ssid, password), shell=True).decode("utf-8")
+                    "nmcli d wifi connect '{}' password '{}'".format(ssid, password), shell=True).decode("utf-8")
             except:
                 continue
             else:
@@ -73,7 +73,7 @@ class NetworkHandler:
             try:
                 output = subprocess.check_output(
                     "nmcli d disconnect {}".format(self.wifiInterface), shell=True)
-                assert "success" in output
+                assert "success" in output.decode("utf-8")
             except:
                 continue
             else:
@@ -107,6 +107,7 @@ class NetworkHandler:
 
         cmd = 'curl -XPUT http://192.168.4.1:8080/connect -d "{}" -v -m 2'.format(
             str(creds))
+        print(cmd)
         try:
             output = subprocess.check_output(cmd, shell=True)
         except subprocess.CalledProcessError as e:
