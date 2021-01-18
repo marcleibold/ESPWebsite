@@ -3,6 +3,7 @@ import subprocess
 import re
 import os
 import time
+import dotenv
 
 
 class NetworkHandler:
@@ -11,6 +12,7 @@ class NetworkHandler:
     ethInterface = ""
 
     def __init__(self):
+        dotenv.load_dotenv(dotenv_path=".")
         interfaces = netifaces.interfaces()
         self.wifiInterface = [
             interface for interface in interfaces if interface.startswith("wl") and not interface.startswith("wlx")
@@ -29,7 +31,7 @@ class NetworkHandler:
             output = subprocess.check_output(
                 "iwlist {} scan | grep -E 'Address|ESSID'".format(self.wifiInterface), shell=True).decode("utf-8")
         except:
-            return set()
+            return False
         networks_raw = re.split("Cell\ [0-9]{2}\ -\ ", output)
         networks = set()
         for network in networks_raw:
@@ -37,8 +39,7 @@ class NetworkHandler:
             if len(parts) > 1:
                 if len(parts[0]) > 0:
                     ssid = parts[1].split("ID:")[1].strip().strip('"')
-                    mac = parts[0].split("s:")[1].strip()
-                    networks.add((ssid, mac))
+                    networks.add(ssid)
         return networks
 
     def connect(self, ssid, password):
@@ -87,8 +88,33 @@ class NetworkHandler:
         #### Returns:
             status (int): Status code of connection (1: success, 0: failure)
         """
-        # TODO: implement api call to connect ESP to network
-        pass
+        mac = client["mac"]
+        espNetworks = self.getMicrocontrollerNetworks()
+        clientSSID = "{}_network".format(mac)
+
+        if clientSSID not in espNetworks:
+            return False
+
+        connected = self.connect(clientSSID, "espdefault")
+
+        if not connected:
+            return False
+
+        creds = {
+            "ssid": os.getenv("WIFI_SSID"),
+            "pass": os.getenv("WIFI_PASS")
+        }
+
+        cmd = 'curl -XPUT http://192.168.4.1:8080/connect -d "{}" -v -m 5'.format(
+            str(creds))
+        try:
+            output = subprocess.check_output(cmd, shell=True)
+        except subprocess.CalledProcessError as e:
+            if "28" in str(e):
+                self.disconnect()
+                return True
+        else:
+            return False
 
     def disconnectClient(self, client):
         """Disconnect a client from the main network to
@@ -101,26 +127,22 @@ class NetworkHandler:
         # TODO : implement api call to disconnect ESP from network
         pass
 
-    def queryNetworks(self, networks):
+    def getMicrocontrollerNetworks(self):
         """Query Wifi Networks for Microcontrollers
 
         #### Args:
             networks (list): list of networks to query
 
         #### Returns:
-            networkData (dict): dict of networks and connected devices
+            espNetworks (list): list of ESP networks
         """
-        # TODO: return dict of networks with containing devices
+        pattern = re.compile(
+            "([0-9A-Fa-f]{2}\:){5}([0-9A-Fa-f]{2})_network")  # regex pattern for ESP network SSID
         networks = self.search()
+        if networks == False:
+            return set()
+        espNetworks = set()
         for network in networks:
-            pass
-
-    def getMicrocontrollerNetworks(self):
-        """get nearby networks which are hosted by ESP8266's
-        #### Returns:
-            microcontrollerNetworks (list): list of networks hosted by the ESP8266's
-        """
-        available = self.search()
-        networkData = self.queryNetworks(available)
-        # TODO: get right networks out of networkData (dict)
-        pass
+            if pattern.match(network):
+                espNetworks.add(network)
+        return espNetworks
