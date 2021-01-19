@@ -34,3 +34,13 @@ def set(configEntry, value):
         return True
     else:
         return False
+
+
+def addController(controller):
+    config["activeController"] += controller
+
+
+def removeController(name):
+    for i, controller in enumerate(config["activeControllers"]):
+        if controller["name"] == name:
+            config["activeControllers"].pop(i)
