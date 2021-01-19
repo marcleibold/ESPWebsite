@@ -65,6 +65,7 @@ def connect(data):
         if mac not in deviceData:
             deviceData[mac] = {"mac": mac}
         deviceData[mac]["name"] = name
+        addController(deviceData[mac])
         config.set("deviceData", deviceData)
         return 1
     return 0
@@ -75,5 +76,29 @@ def disconnect(data):
     data["ip"] = deviceData[data["mac"]]["ip"]
     isDisconnected = networkHandler.disconnectClient(data)
     if isDisconnected:
+        removeController(data)
         return 1
     return 0
+
+
+def addController(data):
+    deviceData = config.get("deviceData")
+    if data["mac"] in deviceData:
+        if "customColors" in deviceData[data["mac"]]:
+            customColors = deviceData[data["mac"]]["customColors"]
+        else:
+            customColors = {}
+    else:
+        customColors = {}
+
+    controller = {
+        "name": data["name"],
+        "customColors": customColors
+    }
+
+    config.addController(controller)
+
+
+def removeController(data):
+    name = config.get("deviceData")[data["mac"]]["name"]
+    config.removeController(name)
