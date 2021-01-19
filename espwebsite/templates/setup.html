@@ -266,7 +266,7 @@
         }
     }
 
-    function loadWaiting() {
+    function loadDevices() {
 
         let xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function() {
@@ -301,8 +301,9 @@
                                         let response = JSON.parse(this.responseText);
                                         let toBeRemoved = document.getElementById(response["mac"] + "_connect").parentNode;
                                         toBeRemoved.parentNode.removeChild(toBeRemoved);
-                                        sleep(5000);
-                                        loadConnected();
+                                        let xhttp = new XMLHttpRequest();
+                                        xhttp.open("GET", "/updateDevices", true);
+                                        xhttp.send();
 
                                     } else if (this.readyState == 4 && this.status == 409) {
                                         event.target.innerHTML = document.getElementById("connectButtonTemplate").innerHTML;
@@ -334,11 +335,6 @@
         xhttp.open("GET", "/waiting", true);
         xhttp.send();
 
-
-
-    }
-
-    function loadConnected() {
         let xhttp2 = new XMLHttpRequest();
         xhttp2.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
@@ -375,10 +371,10 @@
         }
         xhttp2.open("GET", "/connected", true);
         xhttp2.send();
+
     }
 
-    loadInterval = setInterval(loadWaiting, 1000);
-    loadConnected();
+    loadInterval = setInterval(loadDevices, 1000);
 
     function disconnect(event) {
         let mac = event.target.id.split("_")[0];

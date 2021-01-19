@@ -17,7 +17,8 @@ config = {
             ]
         }
     ],
-    "deviceData": {}
+    "deviceData": {},
+    "connectedDevices": []
 }
 
 
@@ -34,6 +35,12 @@ def set(configEntry, value):
         return True
     else:
         return False
+
+
+def add(configEntry, value):
+    if configEntry in config:
+        if type(config[configEntry]) == list:
+            config[configEntry].append(value)
 
 
 def addController(controller):

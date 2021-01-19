@@ -105,3 +105,9 @@ def addController(data):
 def removeController(data):
     name = config.get("deviceData")[data["mac"]]["name"]
     config.removeController(name)
+
+
+def updateConnected():
+    connectedDevices = getConnectedDevices()
+    print("update")
+    config.set("connectedDevices", connectedDevices)

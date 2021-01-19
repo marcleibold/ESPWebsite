@@ -5,6 +5,7 @@ import json
 
 @ app.route('/', methods=['GET'])
 def base():
+
     return render_template("base.html", controllers=helpers.getControllersHTML(config.get('activeControllers')))
 
 
@@ -44,7 +45,7 @@ def connect():
 
 @ app.route('/connected', methods=['GET'])
 def getConnectedDevices():
-    return jsonify(helpers.getConnectedDevices())
+    return jsonify(config.get("connectedDevices"))
 
 
 @ app.route('/disconnect', methods=['POST'])
@@ -58,3 +59,9 @@ def disconnect():
             return Response(status=409)
     else:
         return Response(status=409)
+
+
+@ app.route('/updateDevices', methods=['POST'])
+def update():
+    helpers.updateConnected()
+    return Response(status=200)
