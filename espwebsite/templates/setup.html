@@ -277,7 +277,7 @@
                         }
                     }
                     for (let button of document.getElementsByClassName("connectButton")) {
-                        button.addEventListener("click", () => connect(event));
+                        button.addEventListener("click", connect);
                     }
                 } else if (waitingDevicesWrapper.getElementsByClassName("deviceWrapper").length > waitingDevices.length) {
                     let connectButtons = document.getElementsByClassName("connectButton");
