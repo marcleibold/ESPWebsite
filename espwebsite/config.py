@@ -16,7 +16,8 @@ config = {
                 "blue"
             ]
         }
-    ]
+    ],
+    "deviceData": {}
 }
 
 

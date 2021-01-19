@@ -1,7 +1,7 @@
 from espwebsite.NetworkHandler import NetworkHandler
-import time
+from espwebsite import config
 
-deviceData = {}
+
 networkHandler = NetworkHandler()
 
 
@@ -41,6 +41,7 @@ def getWaitingDevices():
 
 def getConnectedDevices():
     connectedDevices = networkHandler.getConnected()
+    deviceData = config.get("deviceData")
     for device in connectedDevices:
         mac = device["mac"]
         if device["mac"] in deviceData:
@@ -51,23 +52,26 @@ def getConnectedDevices():
             deviceData[mac] = device
             deviceData[mac]["name"] = mac
             device["name"] = device["mac"]
+    config.set("deviceData", deviceData)
     return connectedDevices
 
 
 def connect(data):
     mac = data["mac"]
     name = data["name"]
+    deviceData = config.get("deviceData")
     isConnected = networkHandler.connectClient(data)
     if isConnected:
         if mac not in deviceData:
             deviceData[mac] = {"mac": mac}
         deviceData[mac]["name"] = name
+        config.set("deviceData", deviceData)
         return 1
     return 0
 
 
 def disconnect(data):
-    print(deviceData)
+    deviceData = config.get("deviceData")
     data["ip"] = deviceData[data["mac"]]["ip"]
     isDisconnected = networkHandler.disconnectClient(data)
     if isDisconnected:
