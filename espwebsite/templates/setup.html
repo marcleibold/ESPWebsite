@@ -257,14 +257,9 @@
 </div>
 <script type="text/javascript">
     function sleep(milliseconds) {
-        let timeStart = new Date().getTime();
-        while (true) {
-            let elapsedTime = new Date().getTime() - timeStart;
-            if (elapsedTime > milliseconds) {
-                break;
-            }
-        }
+        return new Promise(resolve => setTimeout(resolve, milliseconds));
     }
+
 
     function loadDevices() {
 
@@ -282,42 +277,7 @@
                         }
                     }
                     for (let button of document.getElementsByClassName("connectButton")) {
-                        button.addEventListener("click", function(event) {
-                            let espName = event.target.parentNode.childNodes[1].childNodes[3].value;
-                            if (espName != "") {
-                                event.target.innerHTML = document.getElementById("connectingTemplate").innerHTML;
-                                event.target.style.backgroundColor = "lightgray";
-                                event.target.parentNode.style.alignSelf = "flex-end";
-
-                                let data = {
-                                    'mac': event.target.id.split("_")[0],
-                                    'name': espName
-                                }
-
-                                xhr = new XMLHttpRequest();
-                                xhr.onreadystatechange = function() {
-                                    if (this.readyState == 4 && this.status == 201) {
-
-                                        let response = JSON.parse(this.responseText);
-                                        let toBeRemoved = document.getElementById(response["mac"] + "_connect").parentNode;
-                                        toBeRemoved.parentNode.removeChild(toBeRemoved);
-                                        let xhttp = new XMLHttpRequest();
-                                        sleep(5000);
-                                        xhttp.open("POST", "/updateDevices", true);
-                                        xhttp.send();
-
-                                    } else if (this.readyState == 4 && this.status == 409) {
-                                        event.target.innerHTML = document.getElementById("connectButtonTemplate").innerHTML;
-                                        event.target.style.backgroundColor = "#29b5a8";
-                                        event.target.parentNode.style.alignSelf = "flex-start";
-                                    }
-
-                                }
-                                xhr.open("PUT", "/connect", true);
-                                xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
-                                xhr.send(JSON.stringify(data));
-                            }
-                        });
+                        button.addEventListener("click", () => connect(event));
                     }
                 } else if (waitingDevicesWrapper.getElementsByClassName("deviceWrapper").length > waitingDevices.length) {
                     let connectButtons = document.getElementsByClassName("connectButton");
@@ -376,6 +336,43 @@
     }
 
     loadInterval = setInterval(loadDevices, 1000);
+
+    function connect(event) {
+        let espName = event.target.parentNode.childNodes[1].childNodes[3].value;
+        if (espName != "") {
+            event.target.innerHTML = document.getElementById("connectingTemplate").innerHTML;
+            event.target.style.backgroundColor = "lightgray";
+            event.target.parentNode.style.alignSelf = "flex-end";
+
+            let data = {
+                'mac': event.target.id.split("_")[0],
+                'name': espName
+            }
+
+            xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 201) {
+
+                    let response = JSON.parse(this.responseText);
+                    let toBeRemoved = document.getElementById(response["mac"] + "_connect").parentNode;
+                    toBeRemoved.parentNode.removeChild(toBeRemoved);
+                    let xhttp = new XMLHttpRequest();
+                    sleep(5000).then(console.log("Updating..."));
+                    xhttp.open("POST", "/updateDevices", true);
+                    xhttp.send();
+
+                } else if (this.readyState == 4 && this.status == 409) {
+                    event.target.innerHTML = document.getElementById("connectButtonTemplate").innerHTML;
+                    event.target.style.backgroundColor = "#29b5a8";
+                    event.target.parentNode.style.alignSelf = "flex-start";
+                }
+
+            }
+            xhr.open("PUT", "/connect", true);
+            xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+            xhr.send(JSON.stringify(data));
+        }
+    }
 
     function disconnect(event) {
         let mac = event.target.id.split("_")[0];
