@@ -68,6 +68,7 @@ def connect(data):
         deviceData[mac]["name"] = name
         addController(deviceData[mac])
         config.set("deviceData", deviceData)
+        config.add("connectedDevices", deviceData[mac])
         return 1
     return 0
 
@@ -78,6 +79,7 @@ def disconnect(data):
     isDisconnected = networkHandler.disconnectClient(data)
     if isDisconnected:
         removeController(data)
+        config.removeDevice(data)
         return 1
     return 0
 
@@ -109,5 +111,4 @@ def removeController(data):
 
 def updateConnected():
     connectedDevices = getConnectedDevices()
-    print("update")
     config.set("connectedDevices", connectedDevices)

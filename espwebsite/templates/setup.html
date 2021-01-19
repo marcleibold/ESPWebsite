@@ -302,7 +302,8 @@
                                         let toBeRemoved = document.getElementById(response["mac"] + "_connect").parentNode;
                                         toBeRemoved.parentNode.removeChild(toBeRemoved);
                                         let xhttp = new XMLHttpRequest();
-                                        xhttp.open("GET", "/updateDevices", true);
+                                        sleep(5000);
+                                        xhttp.open("POST", "/updateDevices", true);
                                         xhttp.send();
 
                                     } else if (this.readyState == 4 && this.status == 409) {

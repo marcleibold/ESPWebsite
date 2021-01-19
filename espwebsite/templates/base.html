@@ -195,6 +195,15 @@
                 }
             };
         </script>
+        <script>
+            function updateDevices() {
+                xhr = new XMLHttpRequest();
+                xhr.open("POST", "/updateDevices", true);
+                xhr.send();
+            }
+            updateDevices();
+            let updateInterval = setInterval(updateDevices, 60000);
+        </script>
     </div>
 </body>
 

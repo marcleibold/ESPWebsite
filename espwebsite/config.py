@@ -51,3 +51,9 @@ def removeController(name):
     for i, controller in enumerate(config["activeControllers"]):
         if controller["name"] == name:
             config["activeControllers"].pop(i)
+
+
+def removeDevice(data):
+    for i, device in enumerate(config["connectedDevices"]):
+        if device["mac"] == data["mac"]:
+            config["connectedDevices"].pop(i)
