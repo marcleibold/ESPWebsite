@@ -9,6 +9,7 @@ def getControllersHTML(activeControllers):
     controllersHTML = ""
     controllerHTMLTemplate = open(
         "espwebsite/templates/controlsWrapper.html").read()
+
     if len(activeControllers) > 0:
         for esp in activeControllers:
             colorsHTML = ""
@@ -87,14 +88,16 @@ def addController(data):
         if "customColors" in deviceData[data["mac"]]:
             customColors = deviceData[data["mac"]]["customColors"]
         else:
-            customColors = {}
+            customColors = []
     else:
-        customColors = {}
+        customColors = []
 
     controller = {
         "name": data["name"],
         "customColors": customColors
     }
+
+    print(controller)
 
     config.addController(controller)
 

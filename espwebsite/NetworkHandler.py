@@ -107,7 +107,6 @@ class NetworkHandler:
 
         cmd = 'curl -XPUT http://192.168.4.1:8080/connect -d "{}" -v -m 2'.format(
             str(creds))
-        print(cmd)
         try:
             output = subprocess.check_output(cmd, shell=True)
         except subprocess.CalledProcessError as e:

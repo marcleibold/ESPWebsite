@@ -37,7 +37,7 @@ def set(configEntry, value):
 
 
 def addController(controller):
-    config["activeController"] += controller
+    config["activeControllers"].append(controller)
 
 
 def removeController(name):

@@ -427,7 +427,7 @@
         padding: 5px;
     }
     
-    svg {
+    .noevent {
         pointer-events: none;
         -webkit-pointer-events: none;
     }
