@@ -5,29 +5,29 @@ from espwebsite import config
 networkHandler = NetworkHandler()
 
 
-def getControllersHTML(activeControllers):
-    controllersHTML = ""
-    controllerHTMLTemplate = open(
-        "espwebsite/templates/controlsWrapper.html").read()
+# def getControllersHTML(activeControllers):
+#     controllersHTML = ""
+#     controllerHTMLTemplate = open(
+#         "espwebsite/templates/controlsWrapper.html").read()
 
-    if len(activeControllers) > 0:
-        for esp in activeControllers:
-            colorsHTML = ""
+#     if len(activeControllers) > 0:
+#         for esp in activeControllers:
+#             colorsHTML = ""
 
-            for i, color in enumerate(esp['customColors']):
-                colorsHTML += """<button id="%s_custom%d" class="customColor" style="background-color: %s;"></button>""" % (
-                    esp['name'], i, color)
+#             for i, color in enumerate(esp['customColors']):
+#                 colorsHTML += """<button id="%s_custom%d" class="customColor" style="background-color: %s;"></button>""" % (
+#                     esp['name'], i, color)
 
-            controllerHTML = controllerHTMLTemplate.replace(
-                "phName", esp['name'])
-            controllerHTML = controllerHTML.replace(
-                "phColors", colorsHTML)
+#             controllerHTML = controllerHTMLTemplate.replace(
+#                 "phName", esp['name'])
+#             controllerHTML = controllerHTML.replace(
+#                 "phColors", colorsHTML)
 
-            controllersHTML += controllerHTML
-    else:
-        return ""
+#             controllersHTML += controllerHTML
+#     else:
+#         return ""
 
-    return controllersHTML
+#     return controllersHTML
 
 
 def getWaitingDevices():
@@ -51,8 +51,9 @@ def getConnectedDevices():
                 deviceData[mac][key] = device[key]
         else:
             deviceData[mac] = device
-            deviceData[mac]["name"] = mac
-            device["name"] = device["mac"]
+            deviceData[mac]["name"] = "_".join(mac.split(":"))
+            deviceData[mac]["customColors"] = []
+            device["name"] = "_".join(device["mac"].split(":"))
     config.set("deviceData", deviceData)
     return connectedDevices
 
@@ -65,8 +66,8 @@ def connect(data):
     if isConnected:
         if mac not in deviceData:
             deviceData[mac] = {"mac": mac}
+            deviceData[mac]["customColors"] = []
         deviceData[mac]["name"] = name
-        addController(deviceData[mac])
         config.set("deviceData", deviceData)
         config.add("connectedDevices", deviceData[mac])
         return 1
@@ -78,35 +79,9 @@ def disconnect(data):
     data["ip"] = deviceData[data["mac"]]["ip"]
     isDisconnected = networkHandler.disconnectClient(data)
     if isDisconnected:
-        removeController(data)
         config.removeDevice(data)
         return 1
     return 0
-
-
-def addController(data):
-    deviceData = config.get("deviceData")
-    if data["mac"] in deviceData:
-        if "customColors" in deviceData[data["mac"]]:
-            customColors = deviceData[data["mac"]]["customColors"]
-        else:
-            customColors = []
-    else:
-        customColors = []
-
-    controller = {
-        "name": data["name"],
-        "customColors": customColors
-    }
-
-    print(controller)
-
-    config.addController(controller)
-
-
-def removeController(data):
-    name = config.get("deviceData")[data["mac"]]["name"]
-    config.removeController(name)
 
 
 def updateConnected():

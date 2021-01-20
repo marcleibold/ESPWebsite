@@ -1,0 +1,63 @@
+<template id="controlsWrapperTemplate">
+    <div class="controlsWrapper" id="phName_wrapper">
+        <div class="toprow">
+            <h1>phName</h1>
+            <label class="switch">
+            <input type="checkbox">
+            <span class="slider round"></span>
+        </label>
+        </div>
+        <div id="DphName_picker" class="colorPicker"></div>
+        <h3 style="padding-bottom: 10px; border-bottom: 1px solid black;">Custom Colors</h3>
+        <div id="DphName_custom" class="customColorWrapper">
+            phColors
+            <button id="phName_addColor" class="customColor add">&#43</button>
+        </div>
+        <script type="text/javascript">
+            var _phName_colorPicker = new iro.ColorPicker("#DphName_picker", {
+                width: 320,
+                color: "#fff",
+                borderColor: "#1d1d25",
+                borderWidth: 2
+            });
+            console.log("phName created");
+        </script>
+    </div>   
+</template>
+
+<template id="customColorsTemplate">
+    <button id="phName_customphIndex" class="customColor" style="background-color: phColor;"></button>
+</template>
+
+<script type="text/javascript">
+    function loadConnected() {
+        xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                let connectedDevices = JSON.parse(this.responseText);
+                let controlsWrapperTemplate = document.getElementById("controlsWrapperTemplate").innerHTML;
+                let customColorsTemplate = document.getElementById("customColorsTemplate").innerHTML;
+                let content = document.getElementById("content");
+                for (let device of connectedDevices) {
+                    if (document.getElementById("D" + device["name"] + "_picker") == null) {
+                        let controlsWrapper = controlsWrapperTemplate.split("phName").join(device["name"]);
+                        let colorsHTML = "";
+                        for (let color in device["customColors"]) {
+                            let customColor = customColorsTemplate.split("phName").join(device["name"]);
+                            customColor = customColor.split("phColor").join(color);
+                            customColor = customColor.split("phIndex".join(device["customColors"].indexOf(color)));
+                            colorsHTML += customColor;
+                        }
+                        controlsWrapper = controlsWrapper.split("phColors").join(colorsHTML);
+                        content.innerHTML += controlsWrapper;
+                        exec_body_scripts(document.getElementById(device["name"] + "_wrapper"));
+                    }
+                }
+            }
+        }
+        xhr.open("GET", "/connected", true);
+        xhr.send();
+    }
+
+    loadInterval = setInterval(loadConnected, 1000);
+</script>

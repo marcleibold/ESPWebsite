@@ -54,7 +54,6 @@
                 - Errors?
                 - Log           
             -->
-            {{controllers|safe}}
         </main>
         <script type="text/javascript">
             let content = document.getElementById("content");
@@ -63,8 +62,7 @@
             let setupButton = menuButtons[1];
             let networkButton = menuButtons[2];
 
-
-            controlsButton.addEventListener("click", function() {
+            const loadControls = function() {
                 var xhttp = new XMLHttpRequest();
                 xhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
@@ -75,9 +73,9 @@
                 };
                 xhttp.open("GET", "/controls", true);
                 xhttp.send();
-            });
+            }
 
-            setupButton.addEventListener("click", function() {
+            const loadSetup = function() {
                 var xhttp = new XMLHttpRequest();
                 xhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
@@ -88,9 +86,9 @@
                 };
                 xhttp.open("GET", "/setup", true);
                 xhttp.send();
-            });
+            }
 
-            networkButton.addEventListener("click", function() {
+            const loadNetwork = function() {
                 var xhttp = new XMLHttpRequest();
                 xhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
@@ -101,7 +99,13 @@
                 };
                 xhttp.open("GET", "/network", true);
                 xhttp.send();
-            });
+            }
+
+            loadControls();
+
+            controlsButton.addEventListener("click", loadControls);
+            setupButton.addEventListener("click", loadSetup);
+            networkButton.addEventListener("click", loadNetwork);
         </script>
         <script type="text/javascript">
             let menuToggler = document.getElementById('menuToggler');

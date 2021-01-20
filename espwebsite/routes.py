@@ -5,13 +5,13 @@ import json
 
 @ app.route('/', methods=['GET'])
 def base():
-
-    return render_template("base.html", controllers=helpers.getControllersHTML(config.get('activeControllers')))
+    return render_template("base.html")
 
 
 @ app.route('/controls', methods=['GET'])
 def controls():
-    return helpers.getControllersHTML(config.get('activeControllers'))
+    # return helpers.getControllersHTML(config.get('connectedDevices'))
+    return open("espwebsite/templates/controls.html").read()
 
 
 @ app.route('/setup', methods=['GET'])
