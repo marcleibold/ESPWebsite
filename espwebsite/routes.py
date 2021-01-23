@@ -65,3 +65,13 @@ def disconnect():
 def update():
     helpers.updateConnected()
     return Response(status=200)
+
+
+@ app.route('/rgb', methods=['POST'])
+def setRGB():
+    data = request.get_json(force=True)
+    if data:
+        helpers.setRGB(data)
+        return Response(status=200)
+    else:
+        return Response(status=409)

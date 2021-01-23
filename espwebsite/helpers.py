@@ -1,33 +1,9 @@
 from espwebsite.NetworkHandler import NetworkHandler
 from espwebsite import config
+import subprocess
 
 
 networkHandler = NetworkHandler()
-
-
-# def getControllersHTML(activeControllers):
-#     controllersHTML = ""
-#     controllerHTMLTemplate = open(
-#         "espwebsite/templates/controlsWrapper.html").read()
-
-#     if len(activeControllers) > 0:
-#         for esp in activeControllers:
-#             colorsHTML = ""
-
-#             for i, color in enumerate(esp['customColors']):
-#                 colorsHTML += """<button id="%s_custom%d" class="customColor" style="background-color: %s;"></button>""" % (
-#                     esp['name'], i, color)
-
-#             controllerHTML = controllerHTMLTemplate.replace(
-#                 "phName", esp['name'])
-#             controllerHTML = controllerHTML.replace(
-#                 "phColors", colorsHTML)
-
-#             controllersHTML += controllerHTML
-#     else:
-#         return ""
-
-#     return controllersHTML
 
 
 def getWaitingDevices():
@@ -87,3 +63,27 @@ def disconnect(data):
 def updateConnected():
     connectedDevices = getConnectedDevices()
     config.set("connectedDevices", connectedDevices)
+
+
+def setRGB(data):
+    """send Color as rgb to microcontroller
+
+    #### Args:
+        data (dict): dict with name and rgb values
+
+    #### Returns:
+        status (boolean): boolean value if API call succeeded
+    """
+    deviceData = config.get("deviceData")
+    for device in deviceData:
+        if deviceData[device]["name"] == data["name"]:
+            cmd = 'curl -XPOST http://{}:8080/rgb -d "{}" -v -m 5'.format(
+                deviceData[device]["ip"], str(data["rgbb"]))
+            print(cmd)
+            try:
+                output = subprocess.check_output(cmd, shell=True)
+            except subprocess.CalledProcessError as e:
+                return False
+            else:
+
+                return True

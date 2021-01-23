@@ -3,7 +3,7 @@
         <div class="toprow">
             <h1>phName</h1>
             <label class="switch">
-            <input type="checkbox">
+            <input id="DphName_check" type="checkbox">
             <span class="slider round"></span>
         </label>
         </div>
@@ -14,13 +14,61 @@
             <button id="phName_addColor" class="customColor add">&#43</button>
         </div>
         <script type="text/javascript">
-            var _phName_colorPicker = new iro.ColorPicker("#DphName_picker", {
+            let _phName_colorPicker = new iro.ColorPicker("#DphName_picker", {
                 width: 320,
                 color: "#fff",
                 borderColor: "#1d1d25",
                 borderWidth: 2
             });
-            console.log("phName created");
+            _phName_colorPicker.on('color:change', function(color) {
+
+                let isOn = document.getElementById("DphName_check").checked;
+
+                data = {
+                    "name": "phName",
+                    "rgbb": {
+                        "r": color.red,
+                        "g": color.green,
+                        "b": color.blue,
+                        "brightness": (color.value / 100) * 255
+                    }
+                }
+                if(isOn){
+                    xhr = new XMLHttpRequest();
+                    xhr.open('POST', '/rgb', true);
+                    xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+                    xhr.send(JSON.stringify(data));
+                }
+            })
+            let _phName_checkBox = document.getElementById("DphName_check");
+            _phName_checkBox.addEventListener("change", function(){
+                if(this.checked){
+                    let color = _phName_colorPicker.color;
+                    data = {
+                        "name": "phName",
+                        "rgbb": {
+                            "r": color.red,
+                            "g": color.green,
+                            "b": color.blue,
+                            "brightness": (color.value / 100) * 255
+                        }
+                    }   
+                } else {
+                    data = {
+                        "name": "phName",
+                        "rgbb": {
+                            "r": 0,
+                            "g": 0,
+                            "b": 0,
+                            "brightness": 0
+                        }                        
+                    }                    
+                }
+                xhr = new XMLHttpRequest();
+                xhr.open('POST', '/rgb', true);
+                xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+                xhr.send(JSON.stringify(data));
+            });
         </script>
     </div>   
 </template>
