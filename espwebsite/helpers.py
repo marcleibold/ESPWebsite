@@ -1,9 +1,11 @@
 from espwebsite.NetworkHandler import NetworkHandler
 from espwebsite import config
 import subprocess
+import time
 
 
 networkHandler = NetworkHandler()
+lastCall = 0
 
 
 def getWaitingDevices():
@@ -74,16 +76,18 @@ def setRGB(data):
     #### Returns:
         status (boolean): boolean value if API call succeeded
     """
-    deviceData = config.get("deviceData")
-    for device in deviceData:
-        if deviceData[device]["name"] == data["name"]:
-            cmd = 'curl -XPOST http://{}:8080/rgb -d "{}" -v -m 5'.format(
-                deviceData[device]["ip"], str(data["rgbb"]))
-            print(cmd)
-            try:
-                output = subprocess.check_output(cmd, shell=True)
-            except subprocess.CalledProcessError as e:
-                return False
-            else:
-
-                return True
+    global lastCall
+    if time.time() - lastCall >= 0.1:
+        deviceData = config.get("deviceData")
+        for device in deviceData:
+            if deviceData[device]["name"] == data["name"]:
+                cmd = 'curl -XPOST http://{}:8080/rgb -d "{}" -v -m 0.5'.format(
+                    deviceData[device]["ip"], str(data["rgbb"]))
+                print(cmd)
+                try:
+                    output = subprocess.check_output(cmd, shell=True)
+                except subprocess.CalledProcessError as e:
+                    return False
+                else:
+                    lastCall = time.time()
+                    return True
