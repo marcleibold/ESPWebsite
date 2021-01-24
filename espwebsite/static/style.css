@@ -360,18 +360,6 @@
         outline: none;
     }
     
-    .connectButton {
-        width: 6vh;
-        height: 6vh;
-        margin: 10px;
-        margin-left: 20px;
-        padding: 5px;
-        border-radius: 10px;
-        border: 2px solid lightgray;
-        background-color: #29b5a8;
-        box-shadow: 0 4px rgb(109, 109, 109);
-    }
-    
     .connectButton:active {
         background-color: white;
         box-shadow: 0 1px rgb(58, 58, 58);
@@ -385,8 +373,8 @@
     }
     
     .connectButton {
-        width: 6vh;
-        height: 6vh;
+        width: 62px;
+        height: 62px;
         margin: 10px;
         margin-left: 20px;
         padding: 5px;
@@ -397,8 +385,8 @@
     }
     
     .disconnectButton {
-        width: 6vh;
-        height: 6vh;
+        width: 62px;
+        height: 62px;
         margin: 10px;
         margin-left: 20px;
         padding: 5px;
