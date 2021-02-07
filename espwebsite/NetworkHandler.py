@@ -104,6 +104,17 @@ class NetworkHandler:
             "ssid": os.getenv("WIFI_SSID"),
             "pass": os.getenv("WIFI_PASS")
         }
+        # Initial Length configuration
+
+        config = {
+            "ledCount": int(client["length"])
+        }
+        cmd = 'curl -XPUT http://192.168.4.1:8080/configure -d "{}" -v -m 2'.format(
+            str(config))
+        try:
+            output = subprocess.check_output(cmd, shell=True)
+        except:
+            pass
 
         cmd = 'curl -XPUT http://192.168.4.1:8080/connect -d "{}" -v -m 2'.format(
             str(creds))

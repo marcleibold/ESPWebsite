@@ -5,8 +5,9 @@
 				<h2>MAC</h2>
 			</div>
 			<input id="MAC_name" class="nameInput" placeholder="Name" type="text">
+            <input id="MAC_length" class="nameInput" placeholder="Length" type="number">
 		</div>
-		<button id="MAC_connect" class="connectButton">
+		<button id="MAC_connect" class="connectButton" style="align-self: center">
 			<svg class="noevent" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
 <g>
 <g>
@@ -338,13 +339,15 @@
 
     function connect(event) {
         let espName = event.target.parentNode.childNodes[1].childNodes[3].value;
-        if (espName != "") {
+        let length = event.target.parentNode.childNodes[1].childNodes[5].value;
+        if (espName != "" && length != "") {
             event.target.innerHTML = document.getElementById("connectingTemplate").innerHTML;
             event.target.style.backgroundColor = "lightgray";
             event.target.parentNode.style.alignSelf = "flex-end";
 
             let data = {
                 'mac': event.target.id.split("_")[0],
+                'length': length,
                 'name': espName
             }
 
