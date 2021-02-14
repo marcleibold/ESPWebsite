@@ -17,7 +17,7 @@
         <script type="text/javascript">
             let _phName_colorPicker = new iro.ColorPicker("#DphName_picker", {
                 width: 320,
-                color: "#fff",
+                color: "phInitialColor",
                 borderColor: "#1d1d25",
                 borderWidth: 2
             });
@@ -90,6 +90,8 @@
                 for (let device of connectedDevices) {
                     if (document.getElementById("D" + device["name"] + "_picker") == null) {
                         let controlsWrapper = controlsWrapperTemplate.split("phName").join(device["name"]);
+                        let colorString = `rgba(${device["color"]["r"]}, ${device["color"]["g"]}, ${device["color"]["b"]}, ${device["color"]["brightness"]})`;
+                        controlsWrapper = controlsWrapper.split("phInitialColor").join(colorString);
                         let colorsHTML = "";
                         for (let color in device["customColors"]) {
                             let customColor = customColorsTemplate.split("phName").join(device["name"]);
@@ -99,6 +101,12 @@
                         }
                         controlsWrapper = controlsWrapper.split("phColors").join(colorsHTML);
                         content.innerHTML += controlsWrapper;
+                        if (device["onState"] == 1) {
+                            console.log("isOn");
+                            document.getElementById("D" + device["name"] + "_check").click();
+                        } else {
+                            console.log("isOff");
+                        }
                         exec_body_scripts(document.getElementById(device["name"] + "_wrapper"));
                     }
                 }
