@@ -12,7 +12,7 @@ class NetworkHandler:
     ethInterface = ""
 
     def __init__(self):
-        dotenv.load_dotenv(dotenv_path=".")
+        dotenv.load_dotenv(dotenv_path=".env")
         interfaces = netifaces.interfaces()
         self.wifiInterface = [
             interface for interface in interfaces if interface.startswith("wl") and not interface.startswith("wlx")
