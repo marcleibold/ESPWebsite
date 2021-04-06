@@ -9,7 +9,7 @@ def get(configEntry):
         return config[configEntry]
 
     else:
-        return False
+        return []
 
 
 def set(configEntry, value):
