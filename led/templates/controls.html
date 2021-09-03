@@ -1,0 +1,120 @@
+<template id="controlsWrapperTemplate">
+    <div class="controlsWrapper" id="phName_wrapper">
+        <div class="toprow">
+            <div class="toprowItem"><div id="DphName_settings" class="settingsDots"></div></div>
+            <div class="toprowItem"><h1>phName</h1></div>
+            <div class="toprowItem"><label class="switch">
+            <input id="DphName_check" type="checkbox">
+            <span class="slider round"></span></div>
+        </label>
+        </div>
+        <div id="DphName_picker" class="colorPicker"></div>
+        <h3 style="padding-bottom: 10px; border-bottom: 1px solid black;">Custom Colors</h3>
+        <div id="DphName_custom" class="customColorWrapper">
+            phColors
+            <button id="phName_addColor" class="customColor add">&#43</button>
+        </div>
+        <script type="text/javascript">
+            let _phName_colorPicker = new iro.ColorPicker("#DphName_picker", {
+                width: 320,
+                color: "phInitialColor",
+                borderColor: "#1d1d25",
+                borderWidth: 2
+            });
+            _phName_colorPicker.on('color:change', function(color) {
+
+                let isOn = document.getElementById("DphName_check").checked;
+
+                data = {
+                    "name": "phName",
+                    "rgbb": {
+                        "r": color.red,
+                        "g": color.green,
+                        "b": color.blue,
+                        "brightness": (color.value / 100) * 255
+                    }
+                }
+                if(isOn){
+                    xhr = new XMLHttpRequest();
+                    xhr.open('POST', '/rgb', true);
+                    xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+                    xhr.send(JSON.stringify(data));
+                }
+            })
+            let _phName_checkBox = document.getElementById("DphName_check");
+            _phName_checkBox.addEventListener("change", function(){
+                if(this.checked){
+                    let color = _phName_colorPicker.color;
+                    data = {
+                        "name": "phName",
+                        "rgbb": {
+                            "r": color.red,
+                            "g": color.green,
+                            "b": color.blue,
+                            "brightness": (color.value / 100) * 255
+                        }
+                    }   
+                } else {
+                    data = {
+                        "name": "phName",
+                        "rgbb": {
+                            "r": 0,
+                            "g": 0,
+                            "b": 0,
+                            "brightness": 0
+                        }                        
+                    }                    
+                }
+                xhr = new XMLHttpRequest();
+                xhr.open('POST', '/rgb', true);
+                xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+                xhr.send(JSON.stringify(data));
+            });
+        </script>
+    </div>   
+</template>
+
+<template id="customColorsTemplate">
+    <button id="phName_customphIndex" class="customColor" style="background-color: phColor;"></button>
+</template>
+
+<script type="text/javascript">
+    function loadConnected() {
+        xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                let connectedDevices = JSON.parse(this.responseText);
+                let controlsWrapperTemplate = document.getElementById("controlsWrapperTemplate").innerHTML;
+                let customColorsTemplate = document.getElementById("customColorsTemplate").innerHTML;
+                let content = document.getElementById("content");
+                for (let device of connectedDevices) {
+                    if (document.getElementById("D" + device["name"] + "_picker") == null) {
+                        let controlsWrapper = controlsWrapperTemplate.split("phName").join(device["name"]);
+                        let colorString = `rgba(${device["color"]["r"]}, ${device["color"]["g"]}, ${device["color"]["b"]}, ${device["color"]["brightness"]})`;
+                        controlsWrapper = controlsWrapper.split("phInitialColor").join(colorString);
+                        let colorsHTML = "";
+                        for (let color in device["customColors"]) {
+                            let customColor = customColorsTemplate.split("phName").join(device["name"]);
+                            customColor = customColor.split("phColor").join(color);
+                            customColor = customColor.split("phIndex".join(device["customColors"].indexOf(color)));
+                            colorsHTML += customColor;
+                        }
+                        controlsWrapper = controlsWrapper.split("phColors").join(colorsHTML);
+                        content.innerHTML += controlsWrapper;
+                        if (device["onState"] == 1) {
+                            console.log("isOn");
+                            document.getElementById("D" + device["name"] + "_check").click();
+                        } else {
+                            console.log("isOff");
+                        }
+                        exec_body_scripts(document.getElementById(device["name"] + "_wrapper"));
+                    }
+                }
+            }
+        }
+        xhr.open("GET", "/connected", true);
+        xhr.send();
+    }
+
+    loadInterval = setInterval(loadConnected, 1000);
+</script>
