@@ -7,16 +7,17 @@
     <title>ESPWebsite</title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width" />
-    <link rel="stylesheet" href="../static/style.css" type="text/css" />
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style.css' %}" type="text/css" />
     <link rel="icon" href="../static/favicon.png">
     <script src="https://cdn.jsdelivr.net/npm/@jaames/iro@5"></script>
-    <script type="text/javascript">
+    {% comment %} <script type="text/javascript">
         var loadInterval;
 
         window.addEventListener("beforeunload", function() {
             clearInterval(loadInterval);
         });
-    </script>
+    </script> {% endcomment %}
 </head>
 
 <body>
@@ -36,6 +37,31 @@
             </ul>
         </nav>
         <main id="content">
+        {% for c in controllers %}
+            <div class="controlsWrapper" id="{{ c.name|escape }}_wrapper">
+                <div class="toprow">
+                    <div class="toprowItem"><div id="{{ c.name|escape }}_settings" class="settingsDots"></div></div>
+                    <div class="toprowItem"><h1>{{ c.name|escape }}</h1></div>
+                    <div class="toprowItem"><label class="switch">
+                    <input id="{{ c.name|escape }}_check" type="checkbox">
+                    <span class="slider round"></span></div>
+                </label>
+                </div>
+                <div id="{{ c.name|escape }}_picker" class="colorPicker"></div>
+                <h3 style="padding-bottom: 10px; border-bottom: 1px solid black;">Custom Colors</h3>
+                <div id="{{ c.name|escape }}_custom" class="customColorWrapper">
+                    phColors
+                    <button id="{{ c.name|escape }}_addColor" class="customColor add">&#43</button>
+            </div>
+            <script type="text/javascript">
+                let _{{ c.name|escape }}_colorPicker = new iro.ColorPicker("#{{ c.name|escape }}_picker", {
+                width: 320,
+                color: {{ c.color }},
+                borderColor: "#1d1d25",
+                borderWidth: 2
+            });
+            </script>
+        {% endfor %}
             <!-- possible Information for Tabs:
             Controls:
                 - Devices visualized as "cards"
