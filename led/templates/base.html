@@ -39,29 +39,33 @@
         <main id="content">
         {% block content %}
         {% for c in controllers %}
-            <div class="controlsWrapper" id="{{ c.name|escape }}_wrapper">
+            <div class="controlsWrapper" id="{{ c.name|escape }}_wrapper" onload="load_CP();">
                 <div class="toprow">
                     <div class="toprowItem"><div id="{{ c.name|escape }}_settings" class="settingsDots"></div></div>
                     <div class="toprowItem"><h1>{{ c.name|escape }}</h1></div>
-                    <div class="toprowItem"><label class="switch">
-                    <input id="{{ c.name|escape }}_check" type="checkbox">
-                    <span class="slider round"></span></div>
-                </label>
+                    <div class="toprowItem">
+                        <label class="switch">
+                            <input id="{{ c.name|escape }}_check" type="checkbox">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
                 </div>
                 <div id="{{ c.name|escape }}_picker" class="colorPicker"></div>
                 <h3 style="padding-bottom: 10px; border-bottom: 1px solid black;">Custom Colors</h3>
                 <div id="{{ c.name|escape }}_custom" class="customColorWrapper">
                     phColors
                     <button id="{{ c.name|escape }}_addColor" class="customColor add">&#43</button>
-            </div>
-            <script type="text/javascript">
+                </div>
+                <script type="text/javascript">                
                 let _{{ c.name|escape }}_colorPicker = new iro.ColorPicker("#{{ c.name|escape }}_picker", {
-                width: 320,
-                color: {{ c.color }},
-                borderColor: "#1d1d25",
-                borderWidth: 2
-            });
-            </script>
+                    width: 320,
+                    color: {"r": {{ c.r }}, "g": {{ c.g }}, "b": {{ c.b }}, "a": {{ c.a }}},
+                    borderColor: "#1d1d25",
+                    borderWidth: 2
+                });                
+                </script>
+            </div>
+           
         {% endfor %}
         {% endblock %}
             <!-- possible Information for Tabs:

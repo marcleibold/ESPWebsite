@@ -6,8 +6,10 @@ from django.db import models
 class Controller(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
-    rgb = models.JSONField(default=None, blank=True, null=True)
-    brightness = models.IntegerField(default=0)
+    r = models.IntegerField(default=0)
+    g = models.IntegerField(default=0)
+    b = models.IntegerField(default=0)
+    a = models.IntegerField(default=0)
     active = models.BooleanField(default=False)
     custom1 = models.JSONField(default=None, blank=True, null=True)
     custom2 = models.JSONField(default=None, blank=True, null=True)
