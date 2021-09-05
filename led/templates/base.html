@@ -37,6 +37,7 @@
             </ul>
         </nav>
         <main id="content">
+        {% block content %}
         {% for c in controllers %}
             <div class="controlsWrapper" id="{{ c.name|escape }}_wrapper">
                 <div class="toprow">
@@ -62,6 +63,7 @@
             });
             </script>
         {% endfor %}
+        {% endblock %}
             <!-- possible Information for Tabs:
             Controls:
                 - Devices visualized as "cards"
@@ -81,7 +83,7 @@
                 - Log           
             -->
         </main>
-        <script type="text/javascript">
+        {% comment %} <script type="text/javascript">
             let content = document.getElementById("content");
             let menuButtons = document.getElementsByClassName("menu__link");
             let controlsButton = menuButtons[0];
@@ -233,7 +235,7 @@
             }
             updateDevices();
             let updateInterval = setInterval(updateDevices, 60000);
-        </script>
+        </script> {% endcomment %}
     </div>
 </body>
 

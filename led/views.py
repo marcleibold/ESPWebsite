@@ -6,6 +6,4 @@ from .models import Controller
 
 
 def led(request):
-    template = loader.get_template('base.html')
-    context = RequestContext(request, )
-    return HttpResponse(template.render({'controllers': Controller.objects.all()}))
+    return render(request, 'base.html', context={'controllers': Controller.objects.all()})
