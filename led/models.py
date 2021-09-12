@@ -17,8 +17,8 @@ class Controller(models.Model):
     custom4 = models.JSONField(default=None, blank=True, null=True)
     custom5 = models.JSONField(default=None, blank=True, null=True)
 
-    def __str__(self):
+    def __str__(self: 'Controller') -> str:
         return self.name
 
-    def __repr__(self):
+    def __repr__(self: 'Controller') -> str:
         return self.name
