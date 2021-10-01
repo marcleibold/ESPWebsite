@@ -19,7 +19,7 @@ def connect() -> mqtt_client.Client:
             print("Failed to connect, return code %d\n", rc)
 
     client = mqtt_client.Client(client_id)
-    client.username_pw_set(username, password)
+    # client.username_pw_set(username, password)
     client.on_connect = on_connect
     client.connect(broker, port)
     return client
@@ -81,8 +81,3 @@ def handleMessage(client, userdata, message) -> None:
         the message to handle
     """
     print(f"message received: {message} - from {client} with {userdata}")
-
-
-if __name__ == "__main__":
-    client = connect()
-    subscribe(client, "")

@@ -2,8 +2,8 @@ class Config:
     _conf = {
         "MQTT": {
             "broker": "192.168.178.73",
-            "port": 0,
-            "client_id": "",
+            "port": 31523,
+            "client_id": "Main",
             "username": "",
             "password": ""
         }
