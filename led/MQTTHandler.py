@@ -1,83 +1,71 @@
 from paho import mqtt
 from paho.mqtt import mqtt_client
-from .config import *
-
-client_id = Config.get("MQTT.client_id")
-broker = Config.get("MQTT.broker")
-port = Config.get("MQTT.port")
-username = Config.get("MQTT.username")
-password = Config.get("MQTT.password")
+from os import getenv
 
 
-def connect() -> mqtt_client.Client:
-    """connect to MQTT broker
-    """
-    def on_connect(client, userdata, flags, rc):
-        if rc == 0:
-            print("Connected to MQTT Broker!")
-        else:
-            print("Failed to connect, return code %d\n", rc)
+class MQTTHandler:
 
-    client = mqtt_client.Client(client_id)
-    # client.username_pw_set(username, password)
-    client.on_connect = on_connect
-    client.connect(broker, port)
-    return client
+    client_id = getenv("MQTT_CLIENT_ID")
+    host = getenv("MQTT_BROKER")
+    port = getenv("MQTT_BROKER_PORT")
+    username = getenv("MQTT_BROKER_USERNAME")
+    password = getenv("MQTT_BROKER_PASSWORD")
 
+    def __init__(self):
+        self.pub_client = mqtt_client.Client(self.client_id)
+        self.pub_client.connect(self.host, self.port)
+        self.sub_client = mqtt_client.Client()
+        self.sub_client.connect(self.host, self.port)
+        self.sub_client.subscribe("led/waiting")
+        self.sub_client.on_message = self._handleDevices
 
-def publish(client, topic, payload) -> None:
-    """publish a message to a give topic
+    def _handleDevices(self, client, userdata, message) -> None:
+        """handle an incoming message from a subscribed topic
 
-    Parameters
-    ----------
-    client : [type]
-        the client to publish a topic
-    topic : str
-        the topic to push the message to
-    payload : str
-        the payload/message to push
-    """
-    client.publish(topic, payload)
+        Parameters
+        ----------
+        client : [type]
+            the client who receives the topic
+        userdata : dict
+            the data of the sending user
+        message : str
+            the message to handle
+        """
+        # Ask for Name for Device (maybe by using the cards designed for the old setup tab)
+        pass
 
+    def _connectDevice(self, name) -> None:
+        """connect a device to the broker
 
-def subscribe(client, topic) -> None:
-    """subscribe to a given topic
+        Parameters
+        ----------
+        name : str
+            the name of the device
+        """
+        self.pub_client.publish("led/connect", str({"host": self.host, "port": self.port, "name": name}))
 
-    Parameters
-    ----------
-    client : [type]
-        the client which subscribes
-    topic : str
-        the topic to subscribe to
-    """
-    client.subscribe(topic)
-    client.on_message = handleMessage
-    client.loop_forever()
+    def setRGB(self, client, r, g, b) -> None:
+        """set the rgb values of a given client
 
+        Parameters
+        ----------
+        client : str
+            client name
+        r : int
+            r value of the color
+        g : int
+            g value of the color
+        b : int
+            b value of the color
+        """
+        self.pub_client.publish("led/{client}", str({"r": r, "g": g, "b": b}))
 
-def disconnect(client) -> None:
-    """disconnect the client
+    def disconnect(self, name) -> None:
+        """disconnect a client
 
-    Parameters
-    ----------
-    client : [type]
-        the client to disconnect
-    """
-    client.disconnect()
-
-# callbacks
-
-
-def handleMessage(client, userdata, message) -> None:
-    """handle an incoming message from a subscribed topic
-
-    Parameters
-    ----------
-    client : [type]
-        the client who receives the topic
-    userdata : dict
-        the data of the sending user
-    message : str
-        the message to handle
-    """
-    print(f"message received: {message} - from {client} with {userdata}")
+        Parameters
+        ----------
+        name : str
+            name of the client to disconnect
+        """
+        pass
