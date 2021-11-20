@@ -6,18 +6,10 @@
     <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge" /> -->
     <title>ESPWebsite</title>
     <meta name="description" content="" />
-    <meta name="viewport" content="width=device-width" />
-    {% load static %}
+    <meta name="viewport" content="width=device-width" /> {% load static %}
     <link rel="stylesheet" href="{% static 'style.css' %}" type="text/css" />
     <link rel="icon" href="../static/favicon.png">
     <script src="https://cdn.jsdelivr.net/npm/@jaames/iro@5"></script>
-    {% comment %} <script type="text/javascript">
-        var loadInterval;
-
-        window.addEventListener("beforeunload", function() {
-            clearInterval(loadInterval);
-        });
-    </script> {% endcomment %}
 </head>
 
 <body>
@@ -37,12 +29,15 @@
             </ul>
         </nav>
         <main id="content">
-        {% block content %}
-        {% for c in controllers %}
+            {% block content %} {% for c in controllers %}
             <div class="controlsWrapper" id="{{ c.name|escape }}_wrapper" onload="load_CP();">
                 <div class="toprow">
-                    <div class="toprowItem"><div id="{{ c.name|escape }}_settings" class="settingsDots"></div></div>
-                    <div class="toprowItem"><h1>{{ c.name|escape }}</h1></div>
+                    <div class="toprowItem">
+                        <div id="{{ c.name|escape }}_settings" class="settingsDots"></div>
+                    </div>
+                    <div class="toprowItem">
+                        <h1>{{ c.name|escape }}</h1>
+                    </div>
                     <div class="toprowItem">
                         <label class="switch">
                             <input id="{{ c.name|escape }}_check" type="checkbox">
@@ -56,89 +51,19 @@
                     phColors
                     <button id="{{ c.name|escape }}_addColor" class="customColor add">&#43</button>
                 </div>
-                <script type="text/javascript">                
-                let _{{ c.name|escape }}_colorPicker = new iro.ColorPicker("#{{ c.name|escape }}_picker", {
-                    width: 320,
-                    color: {"r": {{ c.r }}, "g": {{ c.g }}, "b": {{ c.b }}, "a": {{ c.a }}},
-                    borderColor: "#1d1d25",
-                    borderWidth: 2
-                });                
+                <script type="text/javascript">
+                    let _{{ c.name | escape }}_colorPicker = new iro.ColorPicker("#{{ c.name|escape }}_picker", {
+                        width: 320,
+                        color: {"r": {{ c.r }}, "g": {{ c.g }}, "b": {{ c.b }}, "a": {{ c.a }}},
+                        borderColor: "#1d1d25",
+                        borderWidth: 2
+                    });
                 </script>
             </div>
-           
-        {% endfor %}
-        {% endblock %}
-            <!-- possible Information for Tabs:
-            Controls:
-                - Devices visualized as "cards"
-                - Color Wheels for every Device
-                - Custom colors list
-                - Option to add custom colors
-                - Animations?
-            Setup:
-                - Connected Devices
-                - Devices waiting to connect
-                - Networks
-            Network: 
-                - Mesh Overview
-                - Data transferred in certain amount of time
-                - Uptime
-                - Errors?
-                - Log           
-            -->
+
+            {% endfor %} {% endblock %}
         </main>
-        {% comment %} <script type="text/javascript">
-            let content = document.getElementById("content");
-            let menuButtons = document.getElementsByClassName("menu__link");
-            let controlsButton = menuButtons[0];
-            let setupButton = menuButtons[1];
-            let networkButton = menuButtons[2];
 
-            const loadControls = function() {
-                var xhttp = new XMLHttpRequest();
-                xhttp.onreadystatechange = function() {
-                    if (this.readyState == 4 && this.status == 200) {
-                        clearInterval(loadInterval);
-                        content.innerHTML = this.responseText;
-                        exec_body_scripts(content);
-                    }
-                };
-                xhttp.open("GET", "/controls", true);
-                xhttp.send();
-            }
-
-            const loadSetup = function() {
-                var xhttp = new XMLHttpRequest();
-                xhttp.onreadystatechange = function() {
-                    if (this.readyState == 4 && this.status == 200) {
-                        clearInterval(loadInterval);
-                        content.innerHTML = this.responseText;
-                        exec_body_scripts(content);
-                    }
-                };
-                xhttp.open("GET", "/setup", true);
-                xhttp.send();
-            }
-
-            const loadNetwork = function() {
-                var xhttp = new XMLHttpRequest();
-                xhttp.onreadystatechange = function() {
-                    if (this.readyState == 4 && this.status == 200) {
-                        clearInterval(loadInterval);
-                        content.innerHTML = this.responseText;
-                        exec_body_scripts(content);
-                    }
-                };
-                xhttp.open("GET", "/network", true);
-                xhttp.send();
-            }
-
-            loadControls();
-
-            controlsButton.addEventListener("click", loadControls);
-            setupButton.addEventListener("click", loadSetup);
-            networkButton.addEventListener("click", loadNetwork);
-        </script>
         <script type="text/javascript">
             let menuToggler = document.getElementById('menuToggler');
             let menuTogglerLabel = document.getElementById('menuTogglerLabel');
@@ -162,84 +87,7 @@
                     }
                 }
             });
-
-            let menuItems = document.getElementsByClassName('menu_item');
-
-            for (let menuLink of menuLinks) {
-                menuLink.addEventListener('click', function() {
-                    for (let menuItem of menuItems) {
-                        menuItem.style.backgroundColor = "#1d1d25";
-                        menuItem.style.boxShadow = "";
-                    }
-                    menuLink.parentElement.style.backgroundColor = "#1b1a20";
-                    menuLink.parentElement.style.boxShadow = "inset 0 8px 5px -5px rgba(0,0,0,0.2), inset 0 -8px 5px -5px rgba(0,0,0,0.2)";
-                });
-            }
         </script>
-        <script>
-            function exec_body_scripts(body_el) {
-                // Finds and executes scripts in a newly added element's body.
-                // Needed since innerHTML does not run scripts.
-                //
-                // Argument body_el is an element in the dom.
-
-                function nodeName(elem, name) {
-                    return elem.nodeName && elem.nodeName.toUpperCase() ===
-                        name.toUpperCase();
-                };
-
-                function evalScript(elem) {
-                    var data = (elem.text || elem.textContent || elem.innerHTML || ""),
-                        head = document.getElementsByTagName("head")[0] ||
-                        document.documentElement,
-                        script = document.createElement("script");
-
-                    script.type = "text/javascript";
-                    try {
-                        // doesn't work on ie...
-                        script.appendChild(document.createTextNode(data));
-                    } catch (e) {
-                        // IE has funky script nodes
-                        script.text = data;
-                    }
-
-                    head.insertBefore(script, head.firstChild);
-                    head.removeChild(script);
-                };
-
-                // main section of function
-                var scripts = [],
-                    script,
-                    children_nodes = body_el.childNodes,
-                    child,
-                    i;
-
-                for (i = 0; children_nodes[i]; i++) {
-                    child = children_nodes[i];
-                    if (nodeName(child, "script") &&
-                        (!child.type || child.type.toLowerCase() === "text/javascript")) {
-                        scripts.push(child);
-                    }
-                }
-
-                for (i = 0; scripts[i]; i++) {
-                    script = scripts[i];
-                    if (script.parentNode) {
-                        script.parentNode.removeChild(script);
-                    }
-                    evalScript(scripts[i]);
-                }
-            };
-        </script>
-        <script>
-            function updateDevices() {
-                xhr = new XMLHttpRequest();
-                xhr.open("POST", "/updateDevices", true);
-                xhr.send();
-            }
-            updateDevices();
-            let updateInterval = setInterval(updateDevices, 60000);
-        </script> {% endcomment %}
     </div>
 </body>
 
